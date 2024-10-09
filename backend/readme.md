@@ -1,3 +1,8 @@
+# Flask Backend Initialization
+
+## Overview
+This repository contains the backend for a Flask application designed to help users manage their tasks, track progress, and gain insights into their productivity.
+
 ## Requirements
 - Python 3.x
 - Flask
