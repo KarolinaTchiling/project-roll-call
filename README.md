@@ -7,7 +7,8 @@
 ### Backend:
 
 - **Python**: Programming Language
-- **Flask**: Web Server framework for python
+- **Flask**: Web Server framework for Python
+- **MongoDB**: NoSQL Document Database
 
 ## Quick Start
 ```
@@ -27,11 +28,51 @@ npm install
 ```
 
 3. Run Frontend
-
 ```
 npm run dev
 ```
 
+**Backend (Server)**
+1. Install python https://www.python.org/downloads
 
-**Backend**
+2. Create and activate the virtual environment
+```
+cd backend/flask_app
+python -m venv venv
+```
 
+On Windows:
+```
+venv\Scripts\activate
+```
+
+On MacOS/Linux:
+```
+source venv/bin/activate
+```
+
+3. Install dependencies
+```
+pip install -r requirements.txt
+```
+
+4. Set Up Your Own Environment Variables
+
+5. Run Database Migrations
+```
+flask db upgrade
+```
+
+6. Start the Server
+```
+flask run
+```
+or 
+```
+python app.py
+```
+
+**Backend (Database)**
+1. Install MongoDB https://www.mongodb.com/try/download/community?tck=docs_server
+
+2. On MongoDB Compass (GUI) select "Add new connection", then ensure that under "URI" the following is shown: "mongodb://localhost:27017/". Now click "Connect".

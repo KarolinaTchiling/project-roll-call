@@ -1,34 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import axios from 'axios';
+import { DataTypeA } from './types';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState<DataTypeA[]>([]);
+  const [firstName, setField1] = useState('');
+  const [lastName, setField2] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get('http://localhost:5000/api/data');
+      setData(response.data);
+    }
+
+    fetchData();
+  },[]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+      const newItem = { firstName, lastName };
+      const response = await axios.post('http://localhost:5000/api/data', newItem);
+      setData([...data, response.data]);
+      setField1('');
+      setField2('');
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+    <div>
+      <h1>Data from MongoDB</h1>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+            {data.map(item => (
+                <li key={item._id}>{JSON.stringify(item)}</li>
+            ))}
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+        <form onSubmit={handleSubmit}>
+            <p>
+              First Name
+              <input
+                  type="text"
+                  value={firstName}
+                  onChange={e => setField1(e.target.value)}
+                  required
+              />
+            </p>
+            <p>
+              Last Name  
+              <input
+                  type="text"
+                  value={lastName}
+                  onChange={e => setField2(e.target.value)}
+                  required
+              />
+            </p>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
   )
 }
 
