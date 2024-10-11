@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Python virtual environment
-../backend/flask_app/venv/
+venv/
