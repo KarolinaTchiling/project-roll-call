@@ -58,12 +58,8 @@ pip install -r requirements.txt
 
 4. Set Up Your Own Environment Variables
 
-5. Run Database Migrations
-```
-flask db upgrade
-```
 
-6. Start the Server
+5. Start the Server
 ```
 flask run
 ```
