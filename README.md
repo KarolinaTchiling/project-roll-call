@@ -58,11 +58,7 @@ npm install
 npm run dev
 ```
 
-<<<<<<< HEAD
 ### Backend
-=======
-**Backend (Server)**
->>>>>>> setup
 1. Install python https://www.python.org/downloads
 
 2. Create and activate the virtual environment
@@ -98,11 +94,12 @@ or
 python app.py
 ```
 
-**Backend (Database)**
-1. Install MongoDB https://www.mongodb.com/try/download/community?tck=docs_server
+### Backend (Database)
+1. Install MongoDB https://www.mongodb.com/try/download/community?tck=docs_server (ensure MongoDB Compass installation is selected)
 
-2. On MongoDB Compass (GUI) select "Add new connection", then ensure that under "URI" the following is shown: "mongodb://localhost:27017/". Now click "Connect".
-<<<<<<< HEAD
+2. On MongoDB Compass (GUI) select "Add new connection", then ensure that under "URI" the following is shown: "mongodb://localhost:27017/" 
+
+3. Click "Connect"
 
 
 # Contributions
@@ -112,5 +109,3 @@ Trello Board is used to create tickets which define work need to be completed.
 Branches from main will be based on tickets.
 
 We plan to implement pull requests which will be reviewed by the developer team when merging to main.
-=======
->>>>>>> setup
