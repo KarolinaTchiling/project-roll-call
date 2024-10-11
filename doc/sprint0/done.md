@@ -1,8 +1,11 @@
-Done.md
+# ROLLCALL DEFINITION OF DONE
 
-What defines a "done" feature:
+## What defines a "done" feature:
 
-- Feature must be completed and fully functional as planned.
-- User must be able to use the intended feature without any bugs.
-- Feature must pass comprehensive testing using JUnit and print statements.
-- Must be able to be merged with main branch 
+1. Feature must be completed and fully functional as planned.
+
+2. User must be able to use the intended feature without any bugs (i.e. it must fulfil the relevant user story).
+
+3. Feature must pass comprehensive testing using JUnit and print statements.
+
+4. Any changes related to the feature must be able to be merged with main branch without serious conflict.
