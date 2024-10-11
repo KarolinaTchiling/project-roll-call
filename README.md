@@ -34,7 +34,8 @@ RollCall will automatically generates a daily roll-call or stand-up report based
 
 #### Backend:
 - **Python**: Programming Language
-- **Flask**: Web Server framework for python
+- **Flask**: Web Server framework for Python
+- **MongoDB**: NoSQL Document Database
 
 ## Running on your Machine
 
@@ -57,7 +58,11 @@ npm install
 npm run dev
 ```
 
+<<<<<<< HEAD
 ### Backend
+=======
+**Backend (Server)**
+>>>>>>> setup
 1. Install python https://www.python.org/downloads
 
 2. Create and activate the virtual environment
@@ -97,6 +102,7 @@ python app.py
 1. Install MongoDB https://www.mongodb.com/try/download/community?tck=docs_server
 
 2. On MongoDB Compass (GUI) select "Add new connection", then ensure that under "URI" the following is shown: "mongodb://localhost:27017/". Now click "Connect".
+<<<<<<< HEAD
 
 
 # Contributions
@@ -106,3 +112,5 @@ Trello Board is used to create tickets which define work need to be completed.
 Branches from main will be based on tickets.
 
 We plan to implement pull requests which will be reviewed by the developer team when merging to main.
+=======
+>>>>>>> setup
