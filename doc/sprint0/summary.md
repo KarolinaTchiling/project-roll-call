@@ -1,4 +1,4 @@
-# ROLLCALL SUMMARY
+# Summary
 
 ## Part 1: The Project Objective
 Build an application that automatically generates a personalized daily roll-call report by syncing with the user's Google Calendar. The app aims to provide an overview of daily meetings, tasks, and priorities, helping users stay organized and informed without manual effort.

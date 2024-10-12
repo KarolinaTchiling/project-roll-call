@@ -8,4 +8,4 @@
 
 3. Feature must pass comprehensive testing using JUnit and print statements.
 
-4. Any changes related to the feature must be able to be merged with main branch without serious conflict.
+4. Any changes related to the feature must be able to merge with main branch without serious conflict.
