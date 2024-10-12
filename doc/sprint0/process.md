@@ -1,4 +1,4 @@
-# ROLLCALL PROCESS
+# Process
 
 ## How did you organize the team?
 

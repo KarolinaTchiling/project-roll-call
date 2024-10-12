@@ -1,4 +1,4 @@
-# ROLLCALL TEAM MEMBERS
+# Team Members
 
 | Full Name | Section | Student ID | Email | Best Way to Contact  | Discord Username |
 |-----------|--------|------------|-------|----------------------|------------------|

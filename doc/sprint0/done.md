@@ -1,4 +1,4 @@
-# ROLLCALL DEFINITION OF DONE
+# Definition of Done
 
 ## What defines a "done" feature:
 
