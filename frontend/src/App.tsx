@@ -15,6 +15,7 @@ import Navbar from './components/Navbar';
 
 function App() {
   return (
+    <div className="bg-custombg min-h-screen">
     <ThemeProvider theme={theme}>
         <Navbar/>
         <Routes>
@@ -28,6 +29,7 @@ function App() {
         </Routes>
 
     </ThemeProvider>
+    </div>
   );
 }
 
