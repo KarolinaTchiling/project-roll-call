@@ -4,7 +4,7 @@
 Karolina Tchilinguirova, Abhinaya Kondi, Christie Tang, Joshua Huliganga 
 
 ### Sprint Goal:
-By the end of this sprint we aim to be able to demo a prototype of Roll Call on one of our personas (Sara) Google Calendar. Our protype will include a frontend home page which connects with the Flask App backend to retrieves Sara’s Google Calendar. Then, automatically displays her daily, weekly and  “Future at a glance” summaries. 
+By the end of this sprint we aim to be able to demo a prototype of Roll Call on one of our personas (Sara) Google Calendar. Our prototype will include a frontend home page which connects with the Flask App backend to retrieves Sara’s Google Calendar. Then, automatically displays her daily, weekly and  “Future at a glance” summaries. 
 
 ### Stories to be completed (On Trello: Sprint 1 Backlog):
 
