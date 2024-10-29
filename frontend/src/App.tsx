@@ -19,7 +19,6 @@ function App() {
     <ThemeProvider theme={theme}>
         <Navbar/>
         <Routes>
-          <Route path="/" element={<SummaryPage />} />
           <Route path="/today" element={<TodayPage />} />
           <Route path="/yesterday" element={<YesterdayPage />} />
           <Route path="/history" element={<HistoryPage />} />
