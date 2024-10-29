@@ -73,7 +73,7 @@ function ResponsiveAppBar() {
                     color: 'black', 
                     display: 'block', 
                     textTransform: 'none',
-                    fontSize: '1.2rem',
+                    fontSize: '1.0rem',
                     top: '4px',
                     fontWeight: location.pathname === page.path ? 'bold' : 'normal',
                 }}
