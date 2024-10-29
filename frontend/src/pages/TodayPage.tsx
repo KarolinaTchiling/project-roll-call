@@ -1,5 +1,6 @@
 import React from 'react';
 import SummaryBubble from '../components/SummaryBubble';
+import HelloBubble from '../components/HelloBubble';
 
 const TodayPage = () => {
   const data = [
@@ -11,10 +12,8 @@ const TodayPage = () => {
 
   return (
     <div className="px-[100px]">
-
-      <div className="bg-orange border rounded-full text-center mx-[150px] my-10">
-        <div className="text-4xl font-bold p-3"> Hello Sara</div>
-      </div>
+      
+      <HelloBubble />
 
       <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
         {data.map((summary) => (
