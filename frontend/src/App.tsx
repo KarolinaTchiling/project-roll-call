@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
-import SummaryPage from './pages/SummaryPage';
+import LandingPage from './pages/LandingPage';
 import TodayPage from './pages/TodayPage';
 import YesterdayPage from './pages/YesterdayPage';
 import HistoryPage from './pages/HistoryPage';
@@ -19,6 +19,7 @@ function App() {
     <ThemeProvider theme={theme}>
         <Navbar/>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/today" element={<TodayPage />} />
           <Route path="/yesterday" element={<YesterdayPage />} />
           <Route path="/history" element={<HistoryPage />} />
