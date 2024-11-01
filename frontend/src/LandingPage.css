@@ -1,18 +1,52 @@
+.container{
+    width:100%;
+    display: flex;
+    padding: 0px;
+    margin: 0px;
+    height: 88.5vh;
+}
+.container-left{
+    width:60%;
+    background-color: #D9E5D6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.container-right{
+    width: 40%;
+    background-color: #13617C;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/* hasn't been used*/
+.section-container {  
+    margin-top: 20rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .header-text{
-    width: 873px;
-    height: 125px;
     flex-shrink: 0;
     color: #000;
     font-family: Nunito;
-    font-size: 86px;
+    font-size: 52px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    padding-left: 28px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 .header-text-bold{
     color: #000;
     font-family: Nunito;
-    font-size: 86px;
+    font-size: 52px;
     font-style: normal;
     font-weight: 900;
     line-height: normal;
@@ -21,7 +55,7 @@
     color: #000;
     text-align: center;
     font-family: Nunito;
-    font-size: 32px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -29,18 +63,45 @@
 .paragraph-bold{
     color: #000;
     font-family: Nunito;
-    font-size: 32px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
 }
-.image-container{
-    width: 429px;
-    height: 405px;
-    flex-shrink: 0;    
+.rollcall-logo-image-container{
+    width: 270px;
+    height: auto;
+    flex-shrink: 0; 
+    padding: 20px;  
 }
-.blue-rectangle{
-    width: 589px;
-    height: 1117px;
+.google-image-container{
+    width: 25px;
+    height: 25px;
     flex-shrink: 0;
 }
+.login-text, .sign-up-text{
+    color: #FFF;
+    text-align: center;
+    font-family: Nunito;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0px;
+}
+  .sign-in, .sign-up{
+    color: #404040;
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    background-color: white;
+    padding: 10px 60px;
+    border-radius: 50px;
+  }
+  .icon{
+    width: 25px;                
+    height: 25px;                    
+  }
+

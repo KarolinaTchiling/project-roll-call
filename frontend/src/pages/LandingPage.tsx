@@ -1,39 +1,55 @@
 import React from 'react';
-import '../LandingPage.css'; 
-import rollcall_logo from "../assets/rollcall_logo.png";
+import '../LandingPage.css';
+import RollCallIcon from "../assets/RollCallIcon.png";
+import GoogleIcon from "../assets/GoogleIcon.png"
 
-const roll= " Roll "
+const roll = " Roll "
 
 const LandingPage = () => {
   return (
-      <>
-        <div className="header-text">
-        <span>Welcome to </span>
-        <span className="header-text-bold">Roll Call</span>
+    <>
+      <div className="container">
+        <div className="container-left">
+          <div className="header-text">
+            <span>Welcome to </span>
+            <span className="header-text-bold">Roll Call</span>
+          </div>
+
+          <div className="paragraph">
+            Your Personal Daily Brief — Transforming Your Google
+          </div>
+          <div className="paragraph">
+            Calendar into Clarity.
+            <span className="paragraph-bold">
+              {roll}
+            </span>
+            into Your Day with Confidence.
+          </div>
+
+          <div className="rollcall-logo-image-container">
+            <img src={RollCallIcon} alt="" />
+          </div>
         </div>
 
-        <div className="paragraph">
-        Your Personal Daily Brief — Transforming Your Google
-        </div>
-        
-        <div className="paragraph">
-        Calendar into Clarity. 
-          <span className="paragraph-bold">
-          {roll}
-          </span> 
-        into Your Day with Confidence.
-        </div>
+        <div className="container-right">
+          <div className="login-text">
+            Login into your account
+          </div>
+          <button className="sign-in">
+            <img src={GoogleIcon} alt="" className="icon" />
+            Login in
+          </button>
 
-        <div className="image-container">
-          <img src={rollcall_logo} alt="" />
+          <div className="sign-up-text">
+            New here?
+          </div>
+          <button className="sign-up">
+            <img src={GoogleIcon} alt="" className="icon" />
+            Sign up with Google
+          </button>
         </div>
-
-        <div className="blue-rectangle">
-        <div className="w-[589px] h-[1117px] bg-[#13617c]" />
-        </div>
-
-        
-      </>
+      </div>
+    </>
   );
 }
 
