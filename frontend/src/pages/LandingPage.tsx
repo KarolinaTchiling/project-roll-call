@@ -2,6 +2,7 @@ import React from 'react';
 import '../LandingPage.css';
 import RollCallIcon from "../assets/RollCallIcon.png";
 import GoogleIcon from "../assets/GoogleIcon.png"
+import { IconButton } from '@mui/material';
 
 const roll = " Roll "
 
@@ -37,7 +38,7 @@ const LandingPage = () => {
           </div>
           <button className="sign-in">
             <img src={GoogleIcon} alt="" className="icon" />
-            Login in
+            Log in
           </button>
 
           <div className="sign-up-text">
