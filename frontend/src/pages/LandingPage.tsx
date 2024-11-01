@@ -33,15 +33,15 @@ const LandingPage = () => {
         </div>
 
         <div className="container-right">
-          <div className="login-text">
+          <div className="login-text pb-3">
             Login into your account
           </div>
-          <button className="sign-in">
+          <button className="log-in">
             <img src={GoogleIcon} alt="" className="icon" />
             Log in
           </button>
 
-          <div className="sign-up-text">
+          <div className="sign-up-text pt-20 pb-3">
             New here?
           </div>
           <button className="sign-up">
