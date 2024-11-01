@@ -99,6 +99,7 @@
     background-color: white;
     padding: 10px 60px;
     border-radius: 50px;
+    align-items: center;
   }
   .icon{
     width: 25px;                
