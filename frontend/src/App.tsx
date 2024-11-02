@@ -6,10 +6,7 @@ import TodayPage from './pages/TodayPage';
 import YesterdayPage from './pages/YesterdayPage';
 import HistoryPage from './pages/HistoryPage';
 import InsightsPage from './pages/InsightsPage';
-
-
 import DBport from './pages/DBport';
-import Navbar from './components/Navbar';
 
 
 function App() {
