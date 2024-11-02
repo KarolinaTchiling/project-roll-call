@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 
-import SummaryPage from './pages/SummaryPage';
 import TodayPage from './pages/TodayPage';
 import YesterdayPage from './pages/YesterdayPage';
 import HistoryPage from './pages/HistoryPage';
