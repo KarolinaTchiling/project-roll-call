@@ -16,7 +16,6 @@ function App() {
   return (
     <div className="bg-custombg min-h-screen">
     <ThemeProvider theme={theme}>
-        <Navbar/>
         <Routes>
           <Route path="/today" element={<TodayPage />} />
           <Route path="/yesterday" element={<YesterdayPage />} />
