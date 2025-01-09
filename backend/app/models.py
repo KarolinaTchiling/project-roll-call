@@ -1,5 +1,11 @@
-from mongoengine import Document, EmbeddedDocument, EmbeddedDocumentField, StringField, URLField, ListField, EmailField, DictField
+from mongoengine import Document, EmbeddedDocument, EmbeddedDocumentField, StringField, URLField, ListField, EmailField, DictField, IntField
 from datetime import time
+
+class Settings(EmbeddedDocument):
+    greeting = StringField(default="word")              # word/quote
+    future_weeks = IntField(default=4)               # 4 - 12
+    future_organize = StringField(default="category")   # category/priority
+    calendars = ListField(default=list) 
 
 class Creds(EmbeddedDocument):
     token = StringField(required=True) 
@@ -15,24 +21,7 @@ class User(Document):
     email = EmailField(required=True, unique=True)       
     f_name = StringField(required=True, default="User")                 
     l_name = StringField(required=True, default="")                  
-    pfp = URLField() 
-    settings = DictField(default={
-        "greeting": "word", 
-        "future_weeks": 4, 
-        "organize_by": "category",
-        "e1": {"color": 11, "category": "Deadlines", "priority": "High Priority"},
-        "e2": {"color": 4, "category": "None", "priority": "None"},
-        "e3": {"color": 6, "category": "Appointments", "priority": "High Priority"},
-        "e4": {"color": 5, "category": "None", "priority": "None"},
-        "e5": {"color": 2, "category": "Travel", "priority": "Low Priority"},
-        "e6": {"color": 10, "category": "Work", "priority": "Low Priority"},
-        "e7": {"color": "-", "category": "Classes", "priority": "Low Priority"},
-        "e8": {"color": 9, "category": "Workouts", "priority": "Low Priority"},
-        "e9": {"color": 1, "category": "Unique Events", "priority": "Medium Priority"},
-        "e10": {"color": 8, "category": "None", "priority": "None"},
-        "e11": {"color": 3, "category": "None", "priority": "None"},
-        "notification": True,
-        "notification_time": "08:00"
-        })  
-    creds = EmbeddedDocumentField(Creds)          
+    pfp = URLField()  
+    creds = EmbeddedDocumentField(Creds)   
+    settings = EmbeddedDocumentField(Settings, default=Settings)   
 

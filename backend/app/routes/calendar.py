@@ -3,7 +3,6 @@ from ..services.calendar_service.day_event import DayEvent
 from ..services.calendar_service.week_event import WeekEvent
 from ..services.calendar_service.future_event import FutureEvent
 from ..services.calendar_service.todo_event import SuggestedToDo
-from ..services.calendar_service.calendar import get_calendar_list
 from flask import jsonify, session, request
 from . import cal
 from ..services.auth_service.token import get_creds, get_creds_by_id
@@ -37,7 +36,6 @@ def get_calendars():
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
-
 
 
 
