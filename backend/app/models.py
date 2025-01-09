@@ -13,8 +13,8 @@ from datetime import time
 
 
 class WordType(EmbeddedDocument):
-    high = ListField(default=list)
-    medium = ListField(default=list)
+    high = ListField(default=["quiz", "assignment", "midterm", "due", "meeting"])
+    medium = ListField(default=["lecture", "work"])
     low = ListField(default=list)
 
 class CalendarType(EmbeddedDocument):
@@ -52,13 +52,13 @@ class Settings(EmbeddedDocument):
     future_weeks = IntField(default=4)                  # 4 - 12
     future_organize = StringField(default="category")   # category/priority
     calendars = ListField(EmbeddedDocumentField(Calendar), default=list)
-    priories = EmbeddedDocumentField(Priority, default=Priority) 
+    priorities = EmbeddedDocumentField(Priority, default=Priority) 
     priority_type = StringField(default="word_type")    # word_type, calendar_type, color_type
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if not self.priories:  # Initialize priorities with one default Priority if empty
-            self.priories = [Priority()]
+        if not self.priorities:  # Initialize priorities with one default Priority if empty
+            self.priorities = [Priority()]
 
 class User(Document):
     google_id = StringField(required=True, unique=True)  

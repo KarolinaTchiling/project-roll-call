@@ -13,7 +13,8 @@ class Event:
         self.creds = creds 
         self.timezone = pytz.timezone("America/New_York")
         self.now = dt.datetime.now(self.timezone)
-        self.time_min = None
+        start_of_day = self.now.replace(hour=0, minute=0, second=0, microsecond=0)
+        self.time_min = start_of_day.isoformat()
         self.time_max = None
         self.time_period = None
 
@@ -63,7 +64,7 @@ class Event:
             print(f"An error occurred while fetching events: {error}")
             return []
 
-            
+
     # # this function gets the events from Google Calendar
     # def get_events(self):
     #     try:

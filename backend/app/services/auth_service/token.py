@@ -58,7 +58,7 @@ def check_granted_scopes(credentials):
     }
     return features 
 
-def get_user_id(session):
+def get_user_id(session=session):
     """
     Extracts the user ID from the session dictionary.
 

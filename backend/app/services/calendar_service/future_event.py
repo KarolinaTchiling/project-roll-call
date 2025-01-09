@@ -2,6 +2,8 @@ import datetime as dt
 from .event import Event
 from datetime import datetime, timedelta
 from ...models import User
+from app.services.auth_service.token import get_user_id
+from app.services.user_settings import get_user_settings
 
 
 # this class is a subclass of the Event class
@@ -15,82 +17,67 @@ class FutureEvent(Event):
         # set the end of the time range as today + 30 days
         future_weeks = self.user.settings["future_weeks"]
         end_of_month = self.now + dt.timedelta(days=7*future_weeks)
-        self.time_min = self.now.isoformat()
+        # self.time_min = self.now.isoformat()
         self.time_max = end_of_month.isoformat()
         self.time_period = "Future at a glance"
     
 
     def categorize_events(self, events):
-        high_priority_colors = []
-        med_priority_colors = []
+        # print(events)
         high_priority_events = []
         med_priority_events = []
-    
-        # Find High Priority Color IDs
-        for key,value in self.user.settings.items():
-            if isinstance(value, dict) and value.get("priority") == "High Priority":
-                high_priority_colors.append(value.get("color"))
 
-        # Find Med Priority Color IDs
-        for key,value in self.user.settings.items():
-            if isinstance(value, dict) and value.get("priority") == "Medium Priority":
-                med_priority_colors.append(value.get("color"))     
+        # Get the user settings
+        google_id = get_user_id()
+        settings = get_user_settings(google_id)
+        priority_type_string = settings.priority_type
+        priority_type = getattr(settings.priorities, priority_type_string)
 
-        for i in high_priority_colors:
-            high_priority_events += self.filter_events_by_color(events, str(i))
+        high_keys = getattr(priority_type, "high")
+        med_keys = getattr(priority_type, "medium")
 
-        for i in med_priority_colors:
-            med_priority_events += self.filter_events_by_color(events, str(i))
+        print(high_keys)
+        print(med_keys)
 
-        # print(high_priority_colors)
-        # print(med_priority_colors)
-
-        if (len(med_priority_events) > 5):
-            med_priority_events = med_priority_events[:5]
+        # Iterate through events and check if the event names contains any of the high-priority keys
+        for event in events:
+            summary = event.get("summary", "").lower() 
+            if any(key.lower() in summary for key in high_keys):
+                start_date = event.get("start", {}).get("dateTime") or event.get("start", {}).get("date")
+                if start_date:
+                    high_priority_events.append({"event": event.get("summary"), "date": start_date})
         
-        filtered_events = high_priority_events + med_priority_events
-        filtered_events = self.sort_events_by_date(filtered_events)
+        # Iterate through events and check if the event names contains any of the high-priority keys
+        for event in events:
+            summary = event.get("summary", "").lower()
+            if any(key.lower() in summary for key in med_keys):
+                start_date = event.get("start", {}).get("dateTime") or event.get("start", {}).get("date")
+                if start_date:
+                    med_priority_events.append({"event": event.get("summary"), "date": start_date})
 
-        categorized = {}
+        # Sort events by date (soonest first)
+        high_priority_events.sort(key=lambda x: x["date"])
+        med_priority_events.sort(key=lambda x: x["date"])
 
-        for event in filtered_events:
-            event_start = event["start"].get("dateTime") or event["start"].get("date")
-            if "dateTime" in event["start"]:
-                event_start = datetime.fromisoformat(event_start)
-                day_label = event_start.strftime('%b %d')
-            else:
-                event_start = datetime.fromisoformat(event_start + "T00:00:00").astimezone(self.timezone)
-                day_label = event_start.strftime('%b %d')
+        # Save only soonest 10
+        if (len(med_priority_events) > 10):
+            med_priority_events = med_priority_events[:10]
 
-            if (self.user.settings["organize_by"] == "category"): # check user setting
-                event_type = self.get_event_type(event)
-            else: 
-                event_type = self.get_event_priority(event)
-     
-            if event_type not in categorized:
-                categorized[event_type] = []
-
-            categorized[event_type].append({
-                "id": event["id"],
-                "summary": event["summary"],
-                "day": day_label
-            })
-
+        # Output the sorted high-priority events
+        print(f"High Priority Events: {len(high_priority_events)}")
+        for event in high_priority_events:
+            print(f"Date: {event['date']}, Event: {event['event']}")
         
-        
-        categorized_events = []
-        for event_type, events in categorized.items():
-            categorized_events.append({
-                "type": event_type,
-                "events": events
-            })
-
-        return categorized_events
+        # Output the sorted high-priority events
+        print(f"Med Priority Events: {len(med_priority_events)}")
+        for event in med_priority_events:
+            print(f"Date: {event['date']}, Event: {event['event']}")
 
 
+        return {
+            "high_priority": high_priority_events,
+            "medium_priority": med_priority_events
+        }
 
-# Helper functions
 
-def filter_events_by_title(events, title):
-    """Filters events by the given title."""
-    return [event for event in events if event.get("summary", "").strip() == title]
+
