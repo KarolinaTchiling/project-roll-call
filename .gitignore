@@ -33,6 +33,7 @@ __pycache__
 token.json
 
 .env
+client_secret.json
 
 *.credentials.json
 session_data.json
