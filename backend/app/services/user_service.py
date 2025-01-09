@@ -1,5 +1,5 @@
 from mongoengine import DoesNotExist
-from ..models import User, Creds
+from ..models import User, Creds, Settings
 
 def create_user(profile):
     """

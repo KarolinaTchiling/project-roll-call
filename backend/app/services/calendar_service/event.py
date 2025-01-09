@@ -13,36 +13,58 @@ class Event:
         self.creds = creds 
         self.timezone = pytz.timezone("America/New_York")
         self.now = dt.datetime.now(self.timezone)
-        self.time_min = None
+        start_of_day = self.now.replace(hour=0, minute=0, second=0, microsecond=0)
+        self.time_min = start_of_day.isoformat()
         self.time_max = None
         self.time_period = None
 
         self.google_id = get_user_id(session)
         self.user = User.objects.get(google_id=self.google_id)
-        
-    
-    # this function gets the events from Google Calendar
+
+
+    # Get a list of all calendars from the database
+    def get_all_calendars_from_db(self):
+        try:
+            return self.user.settings.calendars
+        except AttributeError:
+            print("No calendars found in the database.")
+            return []
+
+
+        # Query events from all calendars with include == True
     def get_events(self):
         try:
-            # builds service for Google Calendar API
+            # Get all calendars from the database
+            calendars = self.get_all_calendars_from_db()
+            # Filter calendars where include == True
+            included_calendars = [calendar for calendar in calendars if calendar.include]
+            # Build the service for Google Calendar API
             service = build("calendar", "v3", credentials=self.creds)
-            events_result = service.events().list(
-                calendarId="primary",
-                timeMin=self.time_min,
-                timeMax=self.time_max,
-                singleEvents=True,
-                orderBy="startTime"
-            ).execute()
-            # stores the events in events
-            events = events_result.get("items", [])
-            # prints to the console to test functionality (no events found in the Calendar)
-            if not events:
-                print(f"No events found for the {self.time_period}.")
-            return events
-        # handles exception
+
+            all_events = []
+
+            # Iterate over each included calendar and fetch its events
+            for calendar in included_calendars:
+                calendar_id = calendar.calendarID
+                try:
+                    events_result = service.events().list(
+                        calendarId=calendar_id,
+                        timeMin=self.time_min,
+                        timeMax=self.time_max,
+                        singleEvents=True,
+                        orderBy="startTime"
+                    ).execute()
+                    events = events_result.get("items", [])
+                    all_events.extend(events)  # Add the events to the overall list
+                except Exception as calendar_error:
+                    print(f"An error occurred with calendar {calendar_id}: {calendar_error}")
+
+            return all_events
         except Exception as error:
-            print(f"An error occurred: {error}")
-            return None
+            print(f"An error occurred while fetching events: {error}")
+            return []
+
+
     
     # this function gets the event type based on colorId
     def get_event_type(self, event):

@@ -1,8 +1,9 @@
+import requests
 from ..services.calendar_service.day_event import DayEvent
 from ..services.calendar_service.week_event import WeekEvent
 from ..services.calendar_service.future_event import FutureEvent
 from ..services.calendar_service.todo_event import SuggestedToDo
-from flask import jsonify, session
+from flask import jsonify, session, request
 from . import cal
 from ..services.auth_service.token import get_creds, get_creds_by_id
 
@@ -16,7 +17,7 @@ def get_day_events(google_id=None):
     if google_id:
         creds = get_creds_by_id(google_id, REQUIRED_SCOPES)
     else:
-        creds = get_creds(session, REQUIRED_SCOPES)
+        creds = get_creds(REQUIRED_SCOPES)
     day_event = DayEvent(creds)
     events = day_event.get_events()
     events = day_event.categorize_events(events)
@@ -29,7 +30,7 @@ def get_week_events(google_id=None):
     if google_id:
         creds = get_creds_by_id(google_id, REQUIRED_SCOPES)
     else:
-        creds = get_creds(session, REQUIRED_SCOPES)    
+        creds = get_creds(REQUIRED_SCOPES)    
     week_event = WeekEvent(creds)
     events = week_event.get_events()
     events = week_event.categorize_events(events)
@@ -41,7 +42,7 @@ def get_future_events(google_id=None):
     if google_id:
         creds = get_creds_by_id(google_id, REQUIRED_SCOPES)
     else:
-        creds = get_creds(session, REQUIRED_SCOPES)
+        creds = get_creds(REQUIRED_SCOPES)
     future_event = FutureEvent(creds)
     events = future_event.get_events()
     events = future_event.categorize_events(events)
@@ -53,6 +54,6 @@ def get_to_do(google_id=None):
     if google_id:
         creds = get_creds_by_id(google_id, REQUIRED_SCOPES)
     else:
-        creds = get_creds(session, REQUIRED_SCOPES)
+        creds = get_creds(REQUIRED_SCOPES)
     events = SuggestedToDo(creds).get_suggested_tasks()
     return jsonify(events)

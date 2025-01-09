@@ -58,7 +58,7 @@ def check_granted_scopes(credentials):
     }
     return features 
 
-def get_user_id(session):
+def get_user_id(session=session):
     """
     Extracts the user ID from the session dictionary.
 
@@ -118,7 +118,7 @@ def get_creds_by_id(google_id, required_scope):
 
     return cred
 
-def get_creds(session, required_scope):
+def get_creds(required_scope):
     """
     This function returns the required token to make Google API calls. 
     The token is retrieved from the database using the user_id stored in the session.

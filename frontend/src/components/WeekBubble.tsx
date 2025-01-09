@@ -1,29 +1,48 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CalendarEvent } from '../types';
-import { formatTime } from '../utility/dateUtils';
+import { formatEventTime } from '../utility/dateUtils';
 
 function WeekBubble() {
     const [weekEvents, setWeekEvents] = useState<{ day: string; events: CalendarEvent[] }[]>([]);
-    const [error, setError] = useState<string | null>(null); // Add error handling for better debugging
-
+    const [error, setError] = useState<string | null>(null);
+    
     const fetchWeekEvents = async () => {
         try {
             const response = await axios.get('http://localhost:5000/cal/week_events', {
-                withCredentials: true, // Ensures credentials (like cookies) are sent
+                withCredentials: true,
             });
-            setWeekEvents(response.data);
-            setError(null); // Clear error on successful fetch
-            console.log("Fetched week events: ", response.data);
+    
+            const sortedEvents = response.data.map((day: { day: string; events: CalendarEvent[] }) => ({
+                ...day,
+                events: day.events.sort((a, b) => {
+                    const aTime = a.start.dateTime 
+                        ? new Date(a.start.dateTime).getTime() 
+                        : a.start.date 
+                        ? new Date(a.start.date).getTime() 
+                        : Infinity;
+    
+                    const bTime = b.start.dateTime 
+                        ? new Date(b.start.dateTime).getTime() 
+                        : b.start.date 
+                        ? new Date(b.start.date).getTime() 
+                        : Infinity;
+    
+                    return aTime - bTime;
+                }),
+            }));
+    
+            setWeekEvents(sortedEvents);
+            setError(null);
         } catch (error: any) {
-            console.error("Error fetching week events:", error.response?.data || error.message);
-            setError(error.response?.data || error.message); // Store error for display
+            console.error('Error fetching week events:', error.response?.data || error.message);
+            setError(error.response?.data || error.message);
         }
     };
-
+    
     useEffect(() => {
         fetchWeekEvents();
-    }, []); // Runs once on mount
+    }, []);
 
     return (
         <div
@@ -35,8 +54,6 @@ function WeekBubble() {
             <div className="mt-5 text-lg text-center font-bold">Upcoming This Week</div>
 
             <div className="mx-3 mb-7 mt-3 mr-4 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#83ba67]">
-
-                {/* Display events */}
                 {weekEvents.map((day) => (
                     day.events.length > 0 && (
                         <div key={day.day} className="mb-4">
@@ -44,7 +61,7 @@ function WeekBubble() {
                             {day.events.map((event) => (
                                 <div key={event.id} className="ml-5 flex items-start">
                                     <span className="font-semibold text-gray-700 whitespace-nowrap">
-                                        ‣ &nbsp;{event.start.dateTime ? formatTime(event.start.dateTime) : 'All Day'}:
+                                        ‣ &nbsp;{formatEventTime(event.start)}:
                                     </span>
                                     <span className="ml-2 flex-1">{event.summary}</span>
                                 </div>
@@ -58,3 +75,4 @@ function WeekBubble() {
 }
 
 export default WeekBubble;
+
