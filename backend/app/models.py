@@ -1,5 +1,31 @@
-from mongoengine import Document, EmbeddedDocument, EmbeddedDocumentField, StringField, URLField, ListField, EmailField, DictField, IntField, BooleanField
+from mongoengine import (
+    Document,
+    EmbeddedDocument,
+    EmbeddedDocumentField,
+    StringField,
+    URLField,
+    ListField,
+    EmailField,
+    IntField,
+    BooleanField,
+)
 from datetime import time
+
+
+class WordType(EmbeddedDocument):
+    high = ListField(default=list)
+    medium = ListField(default=list)
+    low = ListField(default=list)
+
+class CalendarType(EmbeddedDocument):
+    high = ListField(default=list)
+    medium = ListField(default=list)
+    low = ListField(default=list)
+
+class ColorType(EmbeddedDocument):
+    high = ListField(default=list)
+    medium = ListField(default=list)
+    low = ListField(default=list)
 
 class Calendar(EmbeddedDocument):
     calendarID = StringField(required=True)  # Calendar ID
@@ -7,20 +33,32 @@ class Calendar(EmbeddedDocument):
     summary = StringField()  # Summary of the calendar
     include = BooleanField(default=True)  # Include flag
 
-class Settings(EmbeddedDocument):
-    greeting = StringField(default="word")              # word/quote
-    future_weeks = IntField(default=4)               # 4 - 12
-    future_organize = StringField(default="category")   # category/priority
-    calendars = ListField(EmbeddedDocumentField(Calendar), default=list)
-
 class Creds(EmbeddedDocument):
     token = StringField(required=True) 
     refresh_token = StringField(required=True) 
     token_uri = URLField(required=True) 
     id_token = StringField(required=True) 
-    client_id=StringField(required=True) 
-    client_secret=StringField(required=True) 
-    scopes = ListField(URLField(), required=True)        
+    client_id = StringField(required=True) 
+    client_secret = StringField(required=True) 
+    scopes = ListField(URLField(), required=True)
+
+class Priority(EmbeddedDocument):
+    word_type = EmbeddedDocumentField(WordType, default=WordType)
+    calendar_type = EmbeddedDocumentField(CalendarType, default=CalendarType)
+    color_type = EmbeddedDocumentField(ColorType, default=ColorType)
+
+class Settings(EmbeddedDocument):
+    greeting = StringField(default="word")              # word/quote
+    future_weeks = IntField(default=4)                  # 4 - 12
+    future_organize = StringField(default="category")   # category/priority
+    calendars = ListField(EmbeddedDocumentField(Calendar), default=list)
+    priories = EmbeddedDocumentField(Priority, default=Priority) 
+    priority_type = StringField(default="word_type")    # word_type, calendar_type, color_type
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.priories:  # Initialize priorities with one default Priority if empty
+            self.priories = [Priority()]
 
 class User(Document):
     google_id = StringField(required=True, unique=True)  
@@ -29,5 +67,4 @@ class User(Document):
     l_name = StringField(required=True, default="")                  
     pfp = URLField()  
     creds = EmbeddedDocumentField(Creds)   
-    settings = EmbeddedDocumentField(Settings, default=Settings)   
-
+    settings = EmbeddedDocumentField(Settings, default=Settings)
