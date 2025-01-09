@@ -13,8 +13,8 @@ class Creds(EmbeddedDocument):
 class User(Document):
     google_id = StringField(required=True, unique=True)  
     email = EmailField(required=True, unique=True)       
-    f_name = StringField(required=True)                 
-    l_name = StringField(required=True)                  
+    f_name = StringField(required=True, default="User")                 
+    l_name = StringField(required=True, default="")                  
     pfp = URLField() 
     settings = DictField(default={
         "greeting": "word", 
