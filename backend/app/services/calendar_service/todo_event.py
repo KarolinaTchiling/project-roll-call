@@ -34,11 +34,10 @@ class SuggestedToDo(Event):
             return f"{event_date.strftime('%A, %B %d')}"
 
     def get_suggested_tasks(self):
-        print("SuggestedToDo get_events called...")
-
         todo = []
+        counter = 1  # Initialize a counter for sequential IDs
 
-        # fetch all events from the parent class method
+        # Fetch all events from the parent class method
         all_events = super().get_events()
 
         # Get the user settings
@@ -60,25 +59,25 @@ class SuggestedToDo(Event):
                 # Check for today's events
                 if event_datetime == self.now.date():
                     todo.append({
+                        "id": counter,  # Assign sequential ID
                         "task": f"Complete {event.get('summary')} today",
                         "date": event_datetime.isoformat(),
                     })
+                    counter += 1  # Increment the counter
 
                 # Check for high priority events in the next 3 weeks
                 elif any(key.lower() in summary for key in high_keys):
                     if self.now.date() <= event_datetime <= (self.now + timedelta(weeks=3)).date():
                         relative_week = self.get_relative_week(event_datetime)
                         todo.append({
+                            "id": counter,  # Assign sequential ID
                             "task": f"Prepare for {event.get('summary')} on {relative_week}",
                             "date": event_datetime.isoformat(),
                         })
+                        counter += 1  # Increment the counter
 
         # Sort events by date (soonest first)
         todo.sort(key=lambda x: x["date"])
-
-        # print(f"To-dos: {len(todo)}")
-        # for event in todo:
-        #     print(f"Date: {event['date']}, Task: {event['task']}")
 
         return todo
     
