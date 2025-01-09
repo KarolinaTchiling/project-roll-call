@@ -36,8 +36,8 @@ class FutureEvent(Event):
         high_keys = getattr(priority_type, "high")
         med_keys = getattr(priority_type, "medium")
 
-        print(high_keys)
-        print(med_keys)
+        # print(high_keys)
+        # print(med_keys)
 
         # Iterate through events and check if the event names contains any of the high-priority keys
         for event in events:
@@ -63,15 +63,15 @@ class FutureEvent(Event):
         if (len(med_priority_events) > 10):
             med_priority_events = med_priority_events[:10]
 
-        # Output the sorted high-priority events
-        print(f"High Priority Events: {len(high_priority_events)}")
-        for event in high_priority_events:
-            print(f"Date: {event['date']}, Event: {event['event']}")
+        # # Output the sorted high-priority events
+        # print(f"High Priority Events: {len(high_priority_events)}")
+        # for event in high_priority_events:
+        #     print(f"Date: {event['date']}, Event: {event['event']}")
         
-        # Output the sorted high-priority events
-        print(f"Med Priority Events: {len(med_priority_events)}")
-        for event in med_priority_events:
-            print(f"Date: {event['date']}, Event: {event['event']}")
+        # # Output the sorted high-priority events
+        # print(f"Med Priority Events: {len(med_priority_events)}")
+        # for event in med_priority_events:
+        #     print(f"Date: {event['date']}, Event: {event['event']}")
 
 
         return {

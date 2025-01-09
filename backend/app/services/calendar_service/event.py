@@ -65,28 +65,6 @@ class Event:
             return []
 
 
-    # # this function gets the events from Google Calendar
-    # def get_events(self):
-    #     try:
-    #         # builds service for Google Calendar API
-    #         service = build("calendar", "v3", credentials=self.creds)
-    #         events_result = service.events().list(
-    #             calendarId="primary",
-    #             timeMin=self.time_min,
-    #             timeMax=self.time_max,
-    #             singleEvents=True,
-    #             orderBy="startTime"
-    #         ).execute()
-    #         # stores the events in events
-    #         events = events_result.get("items", [])
-    #         # prints to the console to test functionality (no events found in the Calendar)
-    #         if not events:
-    #             print(f"No events found for the {self.time_period}.")
-    #         return events
-    #     # handles exception
-    #     except Exception as error:
-    #         print(f"An error occurred: {error}")
-    #         return None
     
     # this function gets the event type based on colorId
     def get_event_type(self, event):
