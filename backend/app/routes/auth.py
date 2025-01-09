@@ -2,6 +2,7 @@ from flask import redirect, session, request, url_for, jsonify
 from ..services.auth_service.google_auth import initiate_google_auth, handle_oauth_callback
 from app.services.auth_service.token import save_session, decode_google_id_token
 from app.services.user_service import create_user, get_user, user_in_db, store_creds, update_user
+from app.services.user_settings import set_user_calendars
 from . import auth
 
 
@@ -49,6 +50,8 @@ def callback():
         else:
             user = create_user(user_info) 
             store_creds(user, credentials_dict)  # store creds on signup
+            set_user_calendars(user)
+
             # redirect to the user dashboard to get their settings 
             return redirect("http://localhost:3000/dashboard")
 

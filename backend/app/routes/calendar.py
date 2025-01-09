@@ -9,35 +9,6 @@ from ..services.auth_service.token import get_creds, get_creds_by_id
 
 REQUIRED_SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"]
 
-# route which returns a list of all the users calendars 
-@cal.route("/calendars", methods=["GET"])
-def get_calendars():
-    creds = get_creds(REQUIRED_SCOPES)
-    access_token = creds.token
-    url = "https://www.googleapis.com/calendar/v3/users/me/calendarList"
-    headers = {
-        "Authorization": f"Bearer {access_token}"
-    }
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()  # Raise an exception for HTTP errors
-        calendars = response.json().get("items", [])
-        # return jsonify({"calendars": calendars})  #raw
-
-        filtered_calendars = [
-            {
-                "calendarID": calendar["id"],
-                "colorID": calendar.get("colorId"),  # Use .get() to handle missing fields
-                "summary": calendar["summary"]
-            }
-            for calendar in calendars
-        ]
-        return jsonify({"calendars": filtered_calendars})
-
-    except requests.exceptions.RequestException as e:
-        return jsonify({"error": str(e)}), 500
-
-
 
 # route for getting the events for today from Google Calendar API
 @cal.route("/day_events", methods=['GET'])
