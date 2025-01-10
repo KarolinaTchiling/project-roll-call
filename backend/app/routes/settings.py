@@ -94,6 +94,32 @@ def update_calendar_include():
         return jsonify({"error": str(e)}), 500
 
 
+@setting.route('/update_greeting', methods=['POST'])
+def update_greeting():
+    try:
+        google_id = get_user_id(session)  # Fetch the user's Google ID
+        user = User.objects.get(google_id=google_id)  # Fetch the user object
+
+        # Parse request data
+        data = request.json
+        greeting = data.get('greeting')
+
+        # Validate input
+        if greeting not in ["word", "quote"]:
+            return jsonify({"error": "Invalid greeting value. Allowed values are 'word' or 'quote'."}), 400
+
+        # Access and update the `greeting` field in user settings
+        settings = user.settings
+        settings['greeting'] = greeting
+
+        # Save the updated settings object
+        user.update(set__settings=settings)
+
+        return jsonify({"message": "Greeting updated successfully", "greeting": greeting}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 @setting.route('/add_word', methods=['POST'])
 def add_word():

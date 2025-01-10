@@ -5,10 +5,12 @@ import WordType from '../components/dashboard/WordType';
 import CalendarType from '../components/dashboard/CalendarType'; 
 import ColorType from '../components/dashboard/ColorType'; 
 import ChooseCalendars from '../components/dashboard/ChooseCalendars'; 
+import Switch from '../components/dashboard/SwitchWQ'; 
 
 const DashboardPage = () => {
     const [name, setName] = useState("");
     const [selectedOption, setSelectedOption] = useState<string | null>("Key Word");
+    const [greeting, setGreeting] = useState<string>("word"); // Default to "word"
 
     useEffect(() => {
         const fetchSettings = async () => {
@@ -42,6 +44,7 @@ const DashboardPage = () => {
                 };
 
                 setSelectedOption(priorityMap[settingsData.priority_type] || "Key Word");
+                setGreeting(settingsData.greeting || "word"); // Set greeting from backend
             } catch (err) {
                 console.error("Error fetching settings or name:", err);
             }
@@ -72,6 +75,21 @@ const DashboardPage = () => {
         }
     };
 
+    const toggleGreeting = () => {
+        const newGreeting = greeting === "word" ? "quote" : "word";
+        setGreeting(newGreeting);
+
+        // Update the backend with the new greeting
+        fetch("http://localhost:5000/setting/update_greeting", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ greeting: newGreeting }),
+        }).catch((err) => console.error("Error updating greeting:", err));
+    };
+
     return (
         <div className="min-h-screen flex flex-col">
         <Navbar />
@@ -86,23 +104,41 @@ const DashboardPage = () => {
                 <div className="flex flex-row justify-between">
                 <div className="basis-1/2 ml-7">
                     <div className="justify-self-center mt-4">
-                    <div className="text-xl font-semibold text-center mb-2 mt-5">
-                        Calendar Selection
-                    </div>
-                    <p className="text-center font-semibold mb-2">
-                        Choose which of your Google Calendars will be included in your Roll Call.
-                    </p>
-                    <div className="flex flex-row gap-[49%] justify-center text-lg font-semibold mt-3">
-                        <p>Include</p>
-                        <p>Exclude</p>
-                    </div>
-                    <ChooseCalendars />
+                        
+                        {/* Calendar Selection */}
+                        <div className="text-2xl font-semibold text-center mb-2 mt-5">
+                            Calendar Selection
+                        </div>
+                        <p className="text-center font-semibold mb-2">
+                            Choose which of your Google Calendars will be included in your Roll Call.
+                        </p>
+                        <div className="flex flex-row gap-[49%] justify-center text-lg font-semibold mt-3">
+                            <p>Include</p>
+                            <p>Exclude</p>
+                        </div>
+                        <ChooseCalendars />
+
+                        {/* Greeting Selection */}
+                        <div>
+                            <div className="text-2xl font-semibold text-center mb-2 mt-10">
+                                Greeting Selection
+                            </div>
+                            <div className="flex flex-col gap-[10%] items-center text-lg font-semibold mt-3">
+                                <p className="text-center font-semibold mb-2">
+                                    Choose your greeting preference.
+                                </p>
+                                <Switch greeting={greeting} toggleGreeting={toggleGreeting} />
+                            </div>
+                        </div>
+                       
+
                     </div>
                 </div>
 
+                {/* Prioritization Selection */}
                 <div className="overflow-auto mr-7 h-[100%]">
                     <div>
-                    <div className="text-xl font-semibold text-center mb-2 mt-5">
+                    <div className="text-2xl font-semibold text-center mb-2 mt-5">
                         Prioritization Preference
                     </div>
                     <p className="text-center font-semibold mb-2">
@@ -122,7 +158,6 @@ const DashboardPage = () => {
                         Calendars.
                         </li>
                     </ul>
-
                     <div className="justify-self-center mt-4">
                         <ToggleButton
                         onToggleChange={handleToggleChange}
@@ -130,10 +165,12 @@ const DashboardPage = () => {
                         />
                     </div>
                     </div>
-
-                    {selectedOption === "Key Word" && <WordType />}
-                    {selectedOption === "Event Color" && <ColorType />}
-                    {selectedOption === "Calendar" && <CalendarType />}
+                    {/* Type Selection */}
+                    <div className="justify-self-center mt-4">
+                        {selectedOption === "Key Word" && <WordType />}
+                        {selectedOption === "Event Color" && <ColorType />}
+                        {selectedOption === "Calendar" && <CalendarType />}
+                    </div>
                 </div>
                 </div>
             </div>

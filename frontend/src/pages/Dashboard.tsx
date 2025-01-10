@@ -1,6 +1,6 @@
 import '../DashboardPage.css';
 import Navbar from '../components/Navbar';
-import SwitchWQ from '../components/SwitchWQ';
+import SwitchWQ from '../components/dashboard/SwitchWQ';
 import SwitchCP from '../components/SwitchCP';
 import SwitchYesNo from '../components/SwitchYesNo';
 import SliderFG from '../components/SliderFG';
