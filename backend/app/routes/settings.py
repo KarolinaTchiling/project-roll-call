@@ -64,6 +64,36 @@ def update_priority_type():
         return jsonify({'error': str(e)}), 500
 
 
+@setting.route('/update_calendar_include', methods=['POST'])
+def update_calendar_include():
+    try:
+        google_id = get_user_id(session)  # Fetch the user's Google ID
+        user = User.objects.get(google_id=google_id)  # Fetch the user object
+
+        # Parse request data
+        data = request.json
+        calendarID = data.get('calendarID')
+        include = data.get('include')
+
+        # Validate input
+        if calendarID is None or include is None:
+            return jsonify({"error": "calendarID and include are required"}), 400
+
+        # Update the `include` field for the specified calendar
+        settings = user.settings
+        for calendar in settings['calendars']:
+            if calendar['calendarID'] == calendarID:
+                calendar['include'] = include
+                break
+
+        # Save the updated settings object
+        user.update(set__settings=settings)
+
+        return jsonify({"message": "Calendar include status updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 @setting.route('/add_word', methods=['POST'])
 def add_word():

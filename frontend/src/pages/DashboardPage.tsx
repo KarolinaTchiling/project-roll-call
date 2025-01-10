@@ -4,6 +4,7 @@ import ToggleButton from "../components/dashboard/ToggleButton";
 import WordType from '../components/dashboard/WordType'; 
 import CalendarType from '../components/dashboard/CalendarType'; 
 import ColorType from '../components/dashboard/ColorType'; 
+import ChooseCalendars from '../components/dashboard/ChooseCalendars'; 
 
 const DashboardPage = () => {
     const [name, setName] = useState("");
@@ -73,34 +74,73 @@ const DashboardPage = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Navbar />
-            <div className="flex justify-center items-center flex-grow">
-                <div className="bg-[#CAEBF6] rounded-[20px] shadow-lg w-11/12 md:w-5/6 h-[80vh] p-4">
-                    <h1 className="pt-3 text-4xl text-gray-800 font-medium text-center">{name}'s Dashboard</h1>
-                    <div className="flex flex-row justify-between">
-                        <div className="basis-1/2 ml-7">
-                            <div className="text-xl font-semibold text-center mb-2 mt-5">Prioritization Preference</div>
-                            <p className="text-center font-semibold mb-2">Select the method by which you like to prioritize your Google calendar events.</p>
-                            <ul className="ml-4">
-                                <li>‣ Key words: Add custom keywords to set prioritization.</li>
-                                <li>‣ Event color: Set event prioritization based on the color of events in your Google calendar.</li>
-                                <li>‣ Calendar: Assign prioritization based on each of your Google Calendars.</li>
-                            </ul>
-
-                            <div className="justify-self-center mt-4">
-                                <ToggleButton onToggleChange={handleToggleChange} initialValue={selectedOption} />
-                            </div>
-                        </div>
-
-                        <div className="overflow-auto mr-7 h-[100%]">
-                            {selectedOption === "Key Word" && <WordType />}
-                            {selectedOption === "Event Color" && <ColorType />}
-                            {selectedOption === "Calendar" && <CalendarType />}
-                        </div>
+        <Navbar />
+        <div className="flex justify-center items-center flex-grow">
+            <div className="border border-[15px] border-[#CAEBF6] bg-[#CAEBF6] rounded-[20px] shadow-lg w-11/12 md:w-5/6 h-[80vh] p-1">
+            {/* Dashboard Title (outside of the scrollable content) */}
+            <h1 className="pt-3 text-4xl text-gray-800 font-medium text-center pb-3">
+                {name}'s Dashboard
+            </h1>
+            {/* Scrollable Content */}
+            <div className="overflow-y-auto scrollbar scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#96d0e3] h-[calc(100%-4rem)]">
+                <div className="flex flex-row justify-between">
+                <div className="basis-1/2 ml-7">
+                    <div className="justify-self-center mt-4">
+                    <div className="text-xl font-semibold text-center mb-2 mt-5">
+                        Calendar Selection
+                    </div>
+                    <p className="text-center font-semibold mb-2">
+                        Choose which of your Google Calendars will be included in your Roll Call.
+                    </p>
+                    <div className="flex flex-row gap-[49%] justify-center text-lg font-semibold mt-3">
+                        <p>Include</p>
+                        <p>Exclude</p>
+                    </div>
+                    <ChooseCalendars />
                     </div>
                 </div>
+
+                <div className="overflow-auto mr-7 h-[100%]">
+                    <div>
+                    <div className="text-xl font-semibold text-center mb-2 mt-5">
+                        Prioritization Preference
+                    </div>
+                    <p className="text-center font-semibold mb-2">
+                        Select the method by which you like to prioritize your Google calendar
+                        events.
+                    </p>
+                    <ul className="ml-4">
+                        <li>
+                        ‣ Key words: Add custom keywords to set prioritization.
+                        </li>
+                        <li>
+                        ‣ Event color: Set event prioritization based on the color of events in
+                        your Google calendar.
+                        </li>
+                        <li>
+                        ‣ Calendar: Assign prioritization based on each of your Google
+                        Calendars.
+                        </li>
+                    </ul>
+
+                    <div className="justify-self-center mt-4">
+                        <ToggleButton
+                        onToggleChange={handleToggleChange}
+                        initialValue={selectedOption}
+                        />
+                    </div>
+                    </div>
+
+                    {selectedOption === "Key Word" && <WordType />}
+                    {selectedOption === "Event Color" && <ColorType />}
+                    {selectedOption === "Calendar" && <CalendarType />}
+                </div>
+                </div>
+            </div>
             </div>
         </div>
+        </div>
+
     );
 };
 
