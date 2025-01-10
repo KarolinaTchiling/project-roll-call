@@ -182,7 +182,7 @@ def get_user_scopes(google_id):
 #     session_data = dict(session)
 #     print(session_data)
 
-def print_session(session):
+def print_session(session=session):
     session_data = dict(session)
     print(session_data)
 
