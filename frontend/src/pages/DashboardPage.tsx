@@ -137,7 +137,7 @@ const DashboardPage = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen min-w-[1525px] flex flex-col ">
         <Navbar />
         <div className="flex justify-center items-center flex-grow">
             <div className="border border-[15px] border-[#CAEBF6] bg-[#CAEBF6] rounded-[20px] shadow-lg w-11/12 md:w-5/6 h-[80vh] p-1">
@@ -147,7 +147,7 @@ const DashboardPage = () => {
             </h1>
             {/* Scrollable Content */}
             <div className="overflow-y-auto scrollbar scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#96d0e3] h-[calc(100%-4rem)] pb-5">
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-row justify-center">
                 <div className="basis-1/2 ml-7">
                     <div className="justify-self-center mt-4">
                         
@@ -164,7 +164,7 @@ const DashboardPage = () => {
                         </div>
                         <ChooseCalendars refreshKey={refreshKey} />
 
-                        <div className="mt-4 flex flex-row">
+                        <div className="mt-4 flex flex-row w-[560px]">
                             <p className="basis-[60%]">If you have added or deleted calendars from your Google account, you must update them.</p>
 
                             <div className="basis-[40%] text-center">
