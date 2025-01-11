@@ -13,7 +13,7 @@ export default function ShareDialog() {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false); // Track loading state
   const [sent, setSent] = React.useState(false); // Track if the report was sent
-  const [error, setError] = React.useState(null); // Track errors (optional)
+  const [error, setError] = React.useState<string | null>(null); // Track errors (optional)
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,10 +27,10 @@ export default function ShareDialog() {
     setSent(false); // Reset sent state when closing
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget as HTMLFormElement);
     const formJson = Object.fromEntries(formData.entries());
     const email = formJson.email;
 
@@ -39,7 +39,7 @@ export default function ShareDialog() {
     try {
       const response = await fetch(
         `http://localhost:5000/report/share?recipient=${encodeURIComponent(
-          email
+          email as string
         )}`,
         {
           method: "GET",
@@ -52,7 +52,6 @@ export default function ShareDialog() {
       }
 
       const data = await response.json();
-      console.log("Success:", data);
 
       // Indicate success
       setSent(true);
@@ -118,6 +117,3 @@ export default function ShareDialog() {
     </React.Fragment>
   );
 }
-
-
-

@@ -44,7 +44,6 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
     fetchAuthData();
   }, []);
 
-  console.log('Auth Data:', authData);
 
   if (authData.authenticated === null) {
     // Loading state while checking authentication

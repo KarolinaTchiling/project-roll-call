@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Loader from './Loader';
 
 // Define the Todo interface
 interface Todo {
@@ -11,9 +12,11 @@ interface Todo {
 function TodoBubble() {
   const [weekEvents, setWeekEvents] = useState<Todo[]>([]); // List of events
   const [completedTasks, setCompletedTasks] = useState<{ [key: string]: boolean }>({}); // Completion status
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   // Fetch events from the backend
   const fetchToDo = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.get('http://localhost:5000/cal/to_do', {
         withCredentials: true, // Ensure credentials are sent
@@ -21,6 +24,8 @@ function TodoBubble() {
       setWeekEvents(response.data); // Update state with fetched events
     } catch (error) {
       console.error('Error fetching to-do events:', error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -44,9 +49,9 @@ function TodoBubble() {
 
   return (
     <div
-      className="mb-3 mx-2 border rounded-[30px] bg-[#85D4FF] transition-transform duration-300 transform hover:scale-105 flex flex-col overflow-hidden"
+      className="relative mb-3 mx-2 border rounded-[30px] bg-[#85D4FF] transition-transform duration-300 transform hover:scale-105 flex flex-col overflow-hidden"
       style={{
-        height: 'calc(100vh - 350px)',
+        height: 'calc(100vh - 350px)', // Adjust height based on available space
       }}
     >
       {/* Title */}
@@ -85,6 +90,12 @@ function TodoBubble() {
           <div className="text-center text-gray-500">No events scheduled.</div>
         )}
       </div>
+
+      {loading && ( // Show loader overlay when loading
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-20">
+          <Loader color="#619dbe" /> 
+        </div>
+      )}
     </div>
   );
 }

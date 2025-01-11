@@ -138,24 +138,39 @@ def format_week_html(data):
 def format_future_html(data):
     """Format the future events as HTML."""
     output = "<h2>Future at a Glance</h2>"
-    for category in data:
-        category_type = category["type"]
-        events = category["events"]
-        output += f"<p><strong>{category_type}</strong></p><ul>"
-        for event in events:
-            day = event["day"]
-            summary = event["summary"]
-            output += f"<li>{day}: {summary}</li>"
-        output += "</ul>"
+    
+    if "high_priority" in data:
+        output += "<h3>Highest priority events</h3>"
+        for event in data["high_priority"]:
+            date = format_date(event["date"])
+            summary = event["event"]
+            output += f"<p>‣ {date}:<br>{summary}</p>"
+
+    if "medium_priority" in data:
+        output += "<h3>10 upcoming medium priority events</h3>"
+        for event in data["medium_priority"]:
+            date = format_date(event["date"])
+            summary = event["event"]
+            output += f"<p>‣ {date}:<br>{summary}</p>"
+
     return output
+
+def format_date(date_str):
+    """Convert an ISO date string to a readable format."""
+    try:
+        # Try parsing the datetime string
+        dt = datetime.fromisoformat(date_str)
+        return dt.strftime("%b %d").lstrip("0")  # Format as 'Jan 14'
+    except ValueError:
+        return date_str  # Fallback to the original string if parsing fails
 
 
 def format_todo_html(events_data):
     """Format the to-do list as HTML."""
     output = "<h2>Suggested To-Do</h2><ul>"
     for event in events_data:
-        summary = event.get("summary", "No Summary")
-        output += f"<li> {summary}</li>"
+        task = event.get("task", "No Task Provided")
+        output += f"<li> {task}</li><br>"
     output += "</ul>"
     return output
 

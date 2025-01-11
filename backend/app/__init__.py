@@ -24,12 +24,6 @@ def create_app():
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
 
-    
-    # app.config['SESSION_PERMANENT'] = True
-    # app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
-    # app.config['SECRET_KEY'] =  os.getenv("SECRET_KEY")
-
-    # print(f"App initialized with secret key: {app.secret_key}") 
 
     # Initialize MongoEngine
     init_db()

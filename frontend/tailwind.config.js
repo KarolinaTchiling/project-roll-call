@@ -14,6 +14,9 @@ export default {
         custombg: '#D9E5D6',
         orange: '#FFBE0A',
       },
+      screens: {
+        xl: '1300px', // Custom breakpoint for 1300px
+      },
     },
   },
   plugins: [

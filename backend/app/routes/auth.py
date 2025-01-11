@@ -92,21 +92,30 @@ def logout():
     })
 
 
-# @auth.route('/revoke')
+# @auth.route('/revoke', methods=['POST'])
 # def revoke():
 #     if 'credentials' not in session:
-#         return ('You need to <a href="/authorize">authorize</a> before ' 
-#                 +'testing the code to revoke credentials.')
+#         return jsonify({'error': 'No credentials found in session. Please authenticate first.'}), 401
     
 #     credentials = session['credentials']
-#     token = credentials["token"]
+#     token = credentials.get("token")
     
-#     revoke = requests.post('https://oauth2.googleapis.com/revoke',
+#     if not token:
+#         return jsonify({'error': 'No token found in credentials.'}), 400
+    
+#     revoke = requests.post(
+#         'https://oauth2.googleapis.com/revoke',
 #         params={'token': token},
-#         headers = {'content-type': 'application/x-www-form-urlencoded'})
+#         headers={'content-type': 'application/x-www-form-urlencoded'}
+#     )
 
-#     status_code = getattr(revoke, 'status_code')
-#     return(status_code)
+#     status_code = getattr(revoke, 'status_code', None)
+#     if status_code == 200:
+#         # Clear credentials from session after successful revocation
+#         session.pop('credentials', None)
+#         return jsonify({'message': 'Credentials successfully revoked.'}), 200
+#     else:
+#         return jsonify({'error': f'Failed to revoke credentials. Status code: {status_code}'}), 400
 
 
 ### TESTING ROUTES ----------------------------------------------------------------
