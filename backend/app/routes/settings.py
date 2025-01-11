@@ -13,11 +13,8 @@ from app.models import User  # Ensure the User model is imported
 @setting.route("/get_settings", methods=['GET'])
 def get_settings():
     try:
-        # print_session()
         google_id = get_user_id(session)
         settings = get_user_settings(google_id)  # Fetch the settings object
-
-        print(google_id)
 
         # Serialize settings to a dictionary
         if hasattr(settings, 'to_mongo'):

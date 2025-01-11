@@ -24,7 +24,7 @@ def create_user(profile):
 
         # Save the new user to the database
         user.save()
-        print(f"Created new user with email: {profile['email']}")
+        print(f"Created new user.")
 
     return user
 
@@ -50,14 +50,14 @@ def update_user(profile):
         
         if updated:
             user.save()
-            print(f"User profile updated for google_id: {profile['google_id']}")
+            print(f"User profile updated for user.")
         else:
             print("No changes detected in user profile.")
         
         return user
 
     except DoesNotExist:
-        print(f"No user found with google_id: {profile['google_id']}")
+        print(f"No user found with google_id")
         return None
 
 def get_name(google_id):
@@ -108,7 +108,7 @@ def store_creds(user, creds_dict):
         
         # Save changes to the database
         user.save()
-        print(f"Credentials successfully stored for user {user.google_id}.")
+        print(f"Credentials successfully stored for user.")
     
     except KeyError as e:
         print(f"Missing required field in creds_dict: {e}")

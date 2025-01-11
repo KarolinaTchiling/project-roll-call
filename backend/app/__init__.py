@@ -14,7 +14,7 @@ def create_app():
     load_dotenv()
 
     app = Flask(__name__)
-    CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
+    CORS(app, supports_credentials=True, resources={r"/*": {"origins": os.getenv("FRONTEND_URL")}})
     app.secret_key = os.getenv("SECRET_KEY")
 
     app.config['SESSION_TYPE'] = 'filesystem'  # Use filesystem for local dev, or Redis for production
@@ -22,7 +22,7 @@ def create_app():
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)  # Customize as needed
     app.config['SESSION_COOKIE_NAME'] = 'my_session'
     app.config['SESSION_COOKIE_HTTPONLY'] = True
-    app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+    app.config['SESSION_COOKIE_SECURE'] = True  # Set to True in production with HTTPS
 
     # Initialize MongoEngine
     init_db()
