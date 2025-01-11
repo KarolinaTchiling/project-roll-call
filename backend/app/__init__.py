@@ -5,7 +5,7 @@ from datetime import timedelta
 from flask_cors import CORS
 import os
 from mongoengine import connect
-
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 def create_app():
@@ -14,6 +14,7 @@ def create_app():
     """
 
     app = Flask(__name__)
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
     CORS(app, supports_credentials=True, resources={r"/*": {"origins": os.getenv("FRONTEND_URL")}})
     app.secret_key = os.getenv("SECRET_KEY")
 
