@@ -22,6 +22,7 @@ const predefinedColors: CalendarColor[] = [
   { summary: 'Grape', colorID: '3', colorHex: '#8E24AA', priority: 'none' },
   { summary: 'Lavender', colorID: '1', colorHex: '#7986CB', priority: 'none' },
   { summary: 'Graphite', colorID: '8', colorHex: '#616161', priority: 'none' },
+  { summary: 'Base Calendar Color', colorID: '00', priority: 'none' },
 ];
 
 const ColorType: React.FC = () => {
@@ -58,40 +59,9 @@ const ColorType: React.FC = () => {
     }
   };
 
-  const fetchPrimaryCalendar = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/user/primary_calendar', {
-        method: 'GET',
-        credentials: 'include',
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const primaryCalendar: CalendarColor = {
-        summary: 'Base Calendar Color',
-        colorID: data.colorID || '0',
-        priority: 'none',
-      };
-
-      setPrimaryCalendar(primaryCalendar);
-    } catch (err) {
-      console.error('Error fetching primary calendar:', err);
-    }
-  };
-
   useEffect(() => {
     fetchColorsFromDB();
-    fetchPrimaryCalendar();
   }, []);
-
-  useEffect(() => {
-    if (primaryCalendar) {
-      setColors((prevColors) => [...prevColors, primaryCalendar]);
-    }
-  }, [primaryCalendar]);
 
   const handlePriorityChange = async (index: number, newPriority: string) => {
     const color = colors[index];

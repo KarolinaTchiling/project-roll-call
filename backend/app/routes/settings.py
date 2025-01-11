@@ -1,5 +1,5 @@
 from app.services.auth_service.token import get_user_id, print_session
-from app.services.user_settings import get_user_settings, update_user_nonevent_setting, update_user_event_setting, set_user_calendars
+from app.services.user_settings import get_user_settings, set_user_calendars
 from flask import session, request, jsonify
 from . import setting
 import json
