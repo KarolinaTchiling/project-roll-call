@@ -1,3 +1,6 @@
+from dotenv import load_dotenv  # Load .env at the top
+load_dotenv()
+
 from app import create_app
 import os
 import logging
@@ -9,8 +12,10 @@ app = create_app()
 
 
 if __name__ == "__main__":
+    
+    print(f"FLASK_ENV------------------: {os.getenv('FLASK_ENV')}")
 
-    FLASK_ENV = os.getenv("FLASK_ENV", "production")
+    FLASK_ENV = os.getenv("FLASK_ENV")
 
     if os.getenv("FLASK_ENV") == "development":
         os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'  # Allow HTTP for local testing

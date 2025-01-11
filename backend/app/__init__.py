@@ -1,7 +1,8 @@
+from dotenv import load_dotenv  # Load .env at the top
+load_dotenv()
 from flask import Flask, session
 from datetime import timedelta
 from flask_cors import CORS
-from dotenv import load_dotenv
 import os
 from mongoengine import connect
 
@@ -10,8 +11,6 @@ def create_app():
     """
     App factory function to create and configure the Flask application.
     """
-    # Load environment variables from `.env` file
-    load_dotenv()
 
     app = Flask(__name__)
     CORS(app, supports_credentials=True, resources={r"/*": {"origins": os.getenv("FRONTEND_URL")}})
