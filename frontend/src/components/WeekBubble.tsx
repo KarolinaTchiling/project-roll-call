@@ -12,7 +12,7 @@ function WeekBubble() {
     const fetchWeekEvents = async () => {
         setLoading(true); // Start loading
         try {
-            const response = await axios.get('http://localhost:5000/cal/week_events', {
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/cal/week_events`, {
                 withCredentials: true,
             });
     

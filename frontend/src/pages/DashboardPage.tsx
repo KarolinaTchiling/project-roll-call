@@ -20,7 +20,7 @@ const DashboardPage = () => {
         const fetchSettings = async () => {
             try {
                 // Fetch name
-                const nameResponse = await fetch('http://localhost:5000/user/name', {
+                const nameResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/user/name`, {
                     method: "GET",
                     credentials: "include",
                 });
@@ -31,7 +31,7 @@ const DashboardPage = () => {
                 setName(nameData); // Assuming the name is directly in the response object
 
                 // Fetch settings
-                const settingsResponse = await fetch('http://localhost:5000/setting/get_settings', {
+                const settingsResponse = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/get_settings`, {
                     method: "GET",
                     credentials: "include",
                 });
@@ -62,7 +62,7 @@ const DashboardPage = () => {
         setFutureWeeks(newWeeks);
 
         try {
-            const response = await fetch("http://localhost:5000/setting/update_weeks", {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/update_weeks`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -83,7 +83,7 @@ const DashboardPage = () => {
     const handleUpdateCalendars = async () => {
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:5000/setting/set_calendars", {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/set_calendars`, {
                 method: "POST",
                 credentials: "include",
             });
@@ -110,7 +110,7 @@ const DashboardPage = () => {
         };
 
         if (newOption) {
-            fetch("http://localhost:5000/setting/update_priority_type", {
+            fetch(`${import.meta.env.VITE_BASE_URL}/setting/update_priority_type`, {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -126,7 +126,7 @@ const DashboardPage = () => {
         setGreeting(newGreeting);
 
         // Update the backend with the new greeting
-        fetch("http://localhost:5000/setting/update_greeting", {
+        fetch(`${import.meta.env.VITE_BASE_URL}/setting/update_greeting`, {
             method: "POST",
             credentials: "include",
             headers: {

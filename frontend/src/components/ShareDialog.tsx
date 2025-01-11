@@ -38,7 +38,7 @@ export default function ShareDialog() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/report/share?recipient=${encodeURIComponent(
+        `${import.meta.env.VITE_BASE_URL}/report/share?recipient=${encodeURIComponent(
           email as string
         )}`,
         {

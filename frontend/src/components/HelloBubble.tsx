@@ -13,7 +13,7 @@ const HelloBubble = () => {
 	useEffect(() => {
 		const fetchSettings = async () => {
 			try {
-				const settingsResponse = await axios.get('http://localhost:5000/setting/get_settings', {withCredentials: true});
+				const settingsResponse = await axios.get(`${import.meta.env.VITE_BASE_URL}/setting/get_settings`, {withCredentials: true});
 				setGreeting(settingsResponse.data.greeting);
 			} catch (err) {
 				console.error("Error fetching settings", err);
@@ -27,7 +27,7 @@ const HelloBubble = () => {
 		if (greeting === 'word') {
 		const fetchWord = async () => {
 			try {
-			const response = await axios.get("http://localhost:5000/gem/generate_word", {withCredentials: true});
+			const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/gem/generate_word`, {withCredentials: true});
 			setWordData(response.data);
 			} catch (err) {
 			console.error("Error fetching word", err);
@@ -39,7 +39,7 @@ const HelloBubble = () => {
 		} else if (greeting === 'quote') {
 		const fetchQuote = async () => {
 			try {
-			const response = await axios.get("http://localhost:5000/gem/generate_quote", {withCredentials: true});
+			const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/gem/generate_quote`, {withCredentials: true});
 			setQuote(response.data);
 			} catch (err) {
 			console.error("Error fetching quote", err);
@@ -54,7 +54,7 @@ const HelloBubble = () => {
     useEffect(() => {
       const fetchName = async () => {
         try {
-          const response = await fetch('http://localhost:5000/user/name', {
+          const response = await fetch(`${import.meta.env.VITE_BASE_URL}/user/name`, {
             method: "GET",
             credentials: "include",
           });

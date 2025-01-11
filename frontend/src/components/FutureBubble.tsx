@@ -20,7 +20,7 @@ function FutureBubble() {
 
     const fetchFutureEvents = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/cal/future_events', {
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/cal/future_events`, {
                 withCredentials: true,
             });
             setFutureEvents(response.data); // Update state with fetched data
@@ -36,7 +36,7 @@ function FutureBubble() {
     const fetchWeeks = async () => {
         setLoading(true); // Start loading
         try {
-            const response = await axios.get('http://localhost:5000/setting/get_settings', {
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/setting/get_settings`, {
                 withCredentials: true, // Ensure credentials like cookies are sent
             });
             setFutureWeeks(response.data.future_weeks); // Update future_weeks state

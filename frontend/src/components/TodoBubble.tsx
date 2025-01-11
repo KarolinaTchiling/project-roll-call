@@ -18,7 +18,7 @@ function TodoBubble() {
   const fetchToDo = async () => {
     setLoading(true); // Start loading
     try {
-      const response = await axios.get('http://localhost:5000/cal/to_do', {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/cal/to_do`, {
         withCredentials: true, // Ensure credentials are sent
       });
       setWeekEvents(response.data); // Update state with fetched events

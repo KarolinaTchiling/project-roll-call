@@ -24,7 +24,7 @@ function TodayBubble() {
   const fetchDayEvents = async () => {
     setLoading(true); // Start loading
     try {
-      const response = await axios.get('http://localhost:5000/cal/day_events', {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/cal/day_events`, {
         withCredentials: true, // Ensure credentials like cookies are sent
       });
       setDayEvents(response.data); // Update state with fetched events
