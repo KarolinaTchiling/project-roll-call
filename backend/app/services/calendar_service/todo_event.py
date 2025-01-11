@@ -13,7 +13,7 @@ class SuggestedToDo(Event):
         # calls superclass constructor
         super().__init__(creds)
         self.time_period = "Suggested To-Do List"
-        self.time_max = (self.now + dt.timedelta(days=30)).isoformat()
+        self.time_max = (self.now + dt.timedelta(days=20)).isoformat()
 
     def get_relative_week(self, event_date):
         # Start of the current week (Monday)
@@ -66,15 +66,43 @@ class SuggestedToDo(Event):
                     counter += 1  # Increment the counter
 
                 # Check for high priority events in the next 3 weeks
-                elif any(key.lower() in summary for key in high_keys):
-                    if self.now.date() <= event_datetime <= (self.now + timedelta(weeks=3)).date():
-                        relative_week = self.get_relative_week(event_datetime)
-                        todo.append({
-                            "id": counter,  # Assign sequential ID
-                            "task": f"Prepare for {event.get('summary')} on {relative_week}",
-                            "date": event_datetime.isoformat(),
-                        })
-                        counter += 1  # Increment the counter
+                else:
+                    if priority_type_string == "word_type":
+                    
+                        if any(key.lower() in summary for key in high_keys): 
+                            if self.now.date() <= event_datetime <= (self.now + timedelta(weeks=3)).date():
+                                relative_week = self.get_relative_week(event_datetime)
+                                todo.append({
+                                    "id": counter,  # Assign sequential ID
+                                    "task": f"Prepare for {event.get('summary')} on {relative_week}",
+                                    "date": event_datetime.isoformat(),
+                                })
+                                counter += 1  # Increment the counter
+
+                    elif priority_type_string == "color_type":
+                        color = event.get('colorId', '00')
+                        if color in high_keys:
+                            if self.now.date() <= event_datetime <= (self.now + timedelta(weeks=3)).date():
+                                relative_week = self.get_relative_week(event_datetime)
+                                todo.append({
+                                    "id": counter,  # Assign sequential ID
+                                    "task": f"Prepare for {event.get('summary')} on {relative_week}",
+                                    "date": event_datetime.isoformat(),
+                                })
+                                counter += 1  # Increment the counter
+
+                    elif priority_type_string == "calendar_type":
+                        cal_id = event.get('organizer', {}).get('email')
+                        if cal_id in high_keys:
+                            if self.now.date() <= event_datetime <= (self.now + timedelta(weeks=3)).date():
+                                relative_week = self.get_relative_week(event_datetime)
+                                todo.append({
+                                    "id": counter,  # Assign sequential ID
+                                    "task": f"Prepare for {event.get('summary')} on {relative_week}",
+                                    "date": event_datetime.isoformat(),
+                                })
+                                counter += 1  # Increment the counter
+
 
         # Sort events by date (soonest first)
         todo.sort(key=lambda x: x["date"])
