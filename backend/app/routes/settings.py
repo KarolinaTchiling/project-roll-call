@@ -144,6 +144,28 @@ def update_greeting():
         return jsonify({"error": str(e)}), 500
 
 
+@setting.route('/update_weeks', methods=['POST'])
+def update_weeks():
+    try:
+        google_id = get_user_id(session)  # Fetch the user's Google ID
+        user = User.objects.get(google_id=google_id)  # Fetch the user object
+
+        # Parse request data
+        data = request.json
+        weeks = data.get('future_weeks')
+
+        # Access and update the `greeting` field in user settings
+        settings = user.settings
+        settings['future_weeks'] = weeks
+
+        # Save the updated settings object
+        user.update(set__settings=settings)
+
+        return jsonify({"message": "Weeks updated successfully", "future_weeks": weeks}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 @setting.route('/add_word', methods=['POST'])
 def add_word():

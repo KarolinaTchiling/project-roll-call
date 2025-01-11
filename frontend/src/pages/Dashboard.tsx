@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import SwitchWQ from '../components/dashboard/SwitchWQ';
 import SwitchCP from '../components/SwitchCP';
 import SwitchYesNo from '../components/SwitchYesNo';
-import SliderFG from '../components/SliderFG';
+import SliderFG from '../components/dashboard/SliderFG';
 import TimeBubble from '../components/TimeBubble';
 import AutoCompleteCE from '../components/AutocompleteCE';
 import AutoCompletePrio from '../components/AutocompletePrio';

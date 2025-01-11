@@ -6,13 +6,14 @@ import CalendarType from '../components/dashboard/CalendarType';
 import ColorType from '../components/dashboard/ColorType'; 
 import ChooseCalendars from '../components/dashboard/ChooseCalendars'; 
 import Switch from '../components/dashboard/SwitchWQ'; 
+import Slider from '../components/dashboard/SliderFG'; 
 
 const DashboardPage = () => {
     const [name, setName] = useState("");
     const [selectedOption, setSelectedOption] = useState<string | null>("Key Word");
     const [greeting, setGreeting] = useState<string>("word"); // Default to "word"
+    const [futureWeeks, setFutureWeeks] = useState<number>(4); // Default to 4 weeks
     const [loading, setLoading] = useState(false); // For loading state
-    const [successMessage, setSuccessMessage] = useState<string>("");
     const [refreshKey, setRefreshKey] = useState(0); // Key to trigger refresh
 
     useEffect(() => {
@@ -48,6 +49,7 @@ const DashboardPage = () => {
 
                 setSelectedOption(priorityMap[settingsData.priority_type] || "Key Word");
                 setGreeting(settingsData.greeting || "word"); // Set greeting from backend
+                setFutureWeeks(settingsData.future_weeks || 4); // Set future weeks from backend
             } catch (err) {
                 console.error("Error fetching settings or name:", err);
             }
@@ -56,9 +58,30 @@ const DashboardPage = () => {
         fetchSettings();
     }, []);
 
+    const handleSliderChange = async (newWeeks: number) => {
+        setFutureWeeks(newWeeks);
+
+        try {
+            const response = await fetch("http://localhost:5000/setting/update_weeks", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ future_weeks: newWeeks }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+        } catch (err) {
+            console.error("Error updating future weeks:", err);
+        }
+    };
+
     const handleUpdateCalendars = async () => {
         setLoading(true);
-        setSuccessMessage(""); // Clear previous messages
         try {
             const response = await fetch("http://localhost:5000/setting/set_calendars", {
                 method: "POST",
@@ -68,13 +91,9 @@ const DashboardPage = () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            const data = await response.json();
-            setSuccessMessage(data.message || "Calendars updated successfully!");
             setRefreshKey((prevKey) => prevKey + 1);
         } catch (err) {
             console.error("Error updating calendars:", err);
-            setSuccessMessage("Failed to update calendars.");
         } finally {
             setLoading(false);
         }
@@ -127,7 +146,7 @@ const DashboardPage = () => {
                 {name}'s Dashboard
             </h1>
             {/* Scrollable Content */}
-            <div className="overflow-y-auto scrollbar scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#96d0e3] h-[calc(100%-4rem)]">
+            <div className="overflow-y-auto scrollbar scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#96d0e3] h-[calc(100%-4rem)] pb-5">
                 <div className="flex flex-row justify-between">
                 <div className="basis-1/2 ml-7">
                     <div className="justify-self-center mt-4">
@@ -156,9 +175,6 @@ const DashboardPage = () => {
                             >
                                 {loading ? "Updating..." : "Update Google Calendars"}
                             </button>
-                            {successMessage && (
-                                <p className="text-blue-500 mt-2">{successMessage}</p>
-                            )}
                             </div>
                         </div>
 
@@ -168,12 +184,28 @@ const DashboardPage = () => {
                             <div className="text-2xl font-semibold text-center mb-2 mt-8">
                                 Greeting Selection
                             </div>
-                            <div className="flex flex-col gap-[10%] items-center text-lg font-semibold mt-3">
-                                <p className="text-center font-semibold mb-2">
+                            <div className="flex flex-row gap-[10%] items-center font-semibold mt-3">
+                                <p className="text-center mb-2">
                                     Choose your greeting preference.
                                 </p>
-                                <div className="ml-7">
+                                <div className="ml">
                                     <Switch greeting={greeting} toggleGreeting={toggleGreeting} />
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        {/* Future Week Selection */}
+                        <div>
+                            <div className="text-2xl font-semibold text-center mb-2 mt-8">
+                                Future at Glance Length
+                            </div>
+                            <div className="flex flex-col gap-[10%] items-center mt-3">
+                                <p className="text-center mb-2">
+                                    Select how many weeks in advance your future at glance report will consider.
+                                </p>
+                                <div className="ml">
+                                    <Slider value={futureWeeks} onChange={handleSliderChange} />
                                 </div>
                                 
                             </div>

@@ -128,7 +128,7 @@ const TransferList: React.FC<TransferListProps> = ({ refreshKey }) => {
   };
 
   const customList = (items: readonly Calendar[]) => (
-    <Paper sx={{ width: 230, height: 400, overflow: "auto", backgroundColor: "#CAEBF6", borderRadius: 2, border: "0.8px solid grey", boxShadow: "none",}}>
+    <Paper sx={{ width: 230, height: 350, overflow: "auto", backgroundColor: "#CAEBF6", borderRadius: 2, border: "0.8px solid grey", boxShadow: "none",}}>
       <List dense component="div" role="list">
         {items.map((value: Calendar) => {
           const labelId = `transfer-list-item-${value.calendarID}-label`;

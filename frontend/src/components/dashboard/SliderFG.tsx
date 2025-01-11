@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
-import { SliderFGProps } from '../types';
+import { SliderFGProps } from '../../types';
 
 const marks = [
   { value: 2, label: '2' },
