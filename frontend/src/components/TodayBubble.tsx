@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CalendarEvent } from '../types';
 import { formatTime } from '../utility/dateUtils';
+import Loader from './Loader';
 
 // Component which displays the Google events for the day on the "Today" page.
 function TodayBubble() {
@@ -18,8 +19,10 @@ function TodayBubble() {
   });
 
   const [error, setError] = useState<string | null>(null); // Add error state for debugging
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   const fetchDayEvents = async () => {
+    setLoading(true); // Start loading
     try {
       const response = await axios.get('http://localhost:5000/cal/day_events', {
         withCredentials: true, // Ensure credentials like cookies are sent
@@ -29,6 +32,8 @@ function TodayBubble() {
     } catch (error: any) {
       console.error('Error fetching day events:', error.response?.data || error.message);
       setError(error.response?.data || error.message); // Store error for display
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -75,18 +80,28 @@ function TodayBubble() {
 
   return (
     <div
-      className="mb-3 mx-2 border rounded-[30px] bg-[#F2B391] transition-transform duration-300 transform hover:scale-105 flex flex-col overflow-hidden"
+      className="relative mb-3 mx-2 border rounded-[30px] bg-[#F2B391] transition-transform duration-300 transform hover:scale-105 flex flex-col overflow-hidden"
       style={{
         height: 'calc(100vh - 350px)', // Subtract space for navbar and margins
       }}
     >
       <div className="mt-5 text-lg text-center font-bold">Up on the Agenda Today</div>
       <div className="mx-3 mb-7 mt-3 mr-4 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#ec8f5c]">
-        {dayEvents.allDay.length > 0 && renderEvents('All Day', dayEvents.allDay)}
-        {dayEvents.morning.length > 0 && renderEvents('Morning', dayEvents.morning)}
-        {dayEvents.afternoon.length > 0 && renderEvents('Afternoon', dayEvents.afternoon)}
-        {dayEvents.evening.length > 0 && renderEvents('Evening', dayEvents.evening)}
+        {error && <div className="text-red-500 text-center">{error}</div>}
+        {!error && (
+          <>
+            {dayEvents.allDay.length > 0 && renderEvents('All Day', dayEvents.allDay)}
+            {dayEvents.morning.length > 0 && renderEvents('Morning', dayEvents.morning)}
+            {dayEvents.afternoon.length > 0 && renderEvents('Afternoon', dayEvents.afternoon)}
+            {dayEvents.evening.length > 0 && renderEvents('Evening', dayEvents.evening)}
+          </>
+        )}
       </div>
+      {loading && ( // Overlay the loader when loading
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-20">
+          <Loader color="#ec8f5c" />
+        </div>
+      )}
     </div>
   );
 }
