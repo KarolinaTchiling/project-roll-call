@@ -16,14 +16,13 @@ import { Link as RouterLink } from 'react-router-dom';
 
 // This is a navigation bar component which routes to different pages
 const pages = [
-  // { label: 'Dashboard', path: '/dashboard' },
-  { label: 'Today', path: '/today' },
-  { label: 'Yesterday', path: '/yesterday' },
-  { label: 'History', path: '/history' },
-  { label: 'Insights', path: '/insights' },
+  { label: 'Roll Call Report', path: '/today' },
+  { label: 'Dashboard', path: '/dashboard' },
+  // { label: 'History', path: '/history' },
+  // { label: 'Insights', path: '/insights' },
 ];
 
-const settings = ['Dashboard', 'Logout'];
+const settings = ['Logout'];
 
 function ResponsiveAppBar() {
   const location = useLocation()
@@ -70,7 +69,6 @@ function ResponsiveAppBar() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('Logout data:', data); // Optional: log session details
         navigate('/'); // Redirect to login page
       } else {
         console.error('Logout failed');
@@ -87,7 +85,7 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
+          <Link to="/today" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'inherit' }}>
             <CalendarIcon sx={{ fontSize: 45, mr: 1, color: 'black' }} />
             <Typography
               variant="h6"
@@ -123,7 +121,6 @@ function ResponsiveAppBar() {
                     top: '4px',
                     fontWeight: location.pathname === page.path ? 'bold' : 'normal',
                 }}
-                disabled={page.path !== '/today'} // Disable all buttons except "Today"
               >
                 {page.label}
               </Button>
@@ -132,7 +129,7 @@ function ResponsiveAppBar() {
 
           {/* User Avatar and Settings Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Logout">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, }}>
                 <Avatar alt="User Avatar" src={profilePic} />
               </IconButton>
@@ -156,7 +153,7 @@ function ResponsiveAppBar() {
                     handleLogout(); // Call the logout function
                   }
                 }}
-                {...(setting === 'Dashboard' && { component: RouterLink, to: '/dashboard' })} 
+                {...(setting === 'Settings' && { component: RouterLink, to: '/settings' })} 
                   >
                   <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>

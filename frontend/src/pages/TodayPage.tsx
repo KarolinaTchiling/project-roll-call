@@ -25,9 +25,8 @@ const TodayPage = () => {
 
         <div className="flex-grow px-[100px] mb-5">
           <div
-            className="grid gap-2"
+            className="grid gap-2 grid-cols-2 xl:grid-cols-4"
             style={{
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
               maxHeight: 'calc(100vh - <Navbar height>)',
             }}
           >
