@@ -23,7 +23,6 @@ function FutureBubble() {
             const response = await axios.get('http://localhost:5000/cal/future_events', {
                 withCredentials: true,
             });
-            console.log("Fetched Data:", response.data);
             setFutureEvents(response.data); // Update state with fetched data
             setError(null);
         } catch (error: any) {
@@ -40,7 +39,6 @@ function FutureBubble() {
             const response = await axios.get('http://localhost:5000/setting/get_settings', {
                 withCredentials: true, // Ensure credentials like cookies are sent
             });
-            console.log(response)
             setFutureWeeks(response.data.future_weeks); // Update future_weeks state
         } catch (error: any) {
             console.error("Error fetching settings:", error.response?.data || error.message);

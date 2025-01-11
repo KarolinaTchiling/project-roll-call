@@ -14,7 +14,6 @@ const HelloBubble = () => {
 		const fetchSettings = async () => {
 			try {
 				const settingsResponse = await axios.get('http://localhost:5000/setting/get_settings', {withCredentials: true});
-				console.log(settingsResponse.data);
 				setGreeting(settingsResponse.data.greeting);
 			} catch (err) {
 				console.error("Error fetching settings", err);
@@ -29,7 +28,6 @@ const HelloBubble = () => {
 		const fetchWord = async () => {
 			try {
 			const response = await axios.get("http://localhost:5000/gem/generate_word", {withCredentials: true});
-			console.log(response.data);
 			setWordData(response.data);
 			} catch (err) {
 			console.error("Error fetching word", err);
@@ -42,7 +40,6 @@ const HelloBubble = () => {
 		const fetchQuote = async () => {
 			try {
 			const response = await axios.get("http://localhost:5000/gem/generate_quote", {withCredentials: true});
-			console.log(response.data);
 			setQuote(response.data);
 			} catch (err) {
 			console.error("Error fetching quote", err);

@@ -69,7 +69,6 @@ function ResponsiveAppBar() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log('Logout data:', data); // Optional: log session details
         navigate('/'); // Redirect to login page
       } else {
         console.error('Logout failed');

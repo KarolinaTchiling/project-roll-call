@@ -52,7 +52,6 @@ export default function ShareDialog() {
       }
 
       const data = await response.json();
-      console.log("Success:", data);
 
       // Indicate success
       setSent(true);
