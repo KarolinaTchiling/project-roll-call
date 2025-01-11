@@ -7,6 +7,7 @@ import os
 from mongoengine import connect
 
 
+
 def create_app():
     """
     App factory function to create and configure the Flask application.
@@ -22,6 +23,7 @@ def create_app():
     app.config['SESSION_COOKIE_NAME'] = 'my_session'
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SECURE'] = True  # Set to True in production with HTTPS
+    app.config['PREFERRED_URL_SCHEME'] = 'https'
 
     # Initialize MongoEngine
     init_db()
