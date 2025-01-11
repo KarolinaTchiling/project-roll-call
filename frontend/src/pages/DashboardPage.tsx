@@ -1,315 +1,264 @@
-import '../DashboardPage.css';
-import Navbar from '../components/Navbar';
-import SwitchWQ from '../components/SwitchWQ';
-import SwitchCP from '../components/SwitchCP';
-import SwitchYesNo from '../components/SwitchYesNo';
-import SliderFG from '../components/SliderFG';
-import TimeBubble from '../components/TimeBubble';
-import AutoCompleteCE from '../components/AutocompleteCE';
-import AutoCompletePrio from '../components/AutocompletePrio';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { EventSettings, Settings} from '../types';
-
-const isEventSettings = (obj: any): obj is EventSettings => {
-  return obj && typeof obj.category === 'string' && typeof obj.color === 'number' || typeof obj.color === 'string';
-};
+import React, { useState, useEffect } from "react";
+import Navbar from "../components/Navbar";
+import ToggleButton from "../components/dashboard/ToggleButton";
+import WordType from '../components/dashboard/WordType'; 
+import CalendarType from '../components/dashboard/CalendarType'; 
+import ColorType from '../components/dashboard/ColorType'; 
+import ChooseCalendars from '../components/dashboard/ChooseCalendars'; 
+import Switch from '../components/dashboard/SwitchWQ'; 
+import Slider from '../components/dashboard/SliderFG'; 
 
 const DashboardPage = () => {
-  const [settings, setSettings] = useState<Settings | null>(null);
-  const [greeting, setGreeting] = useState<string>('');
-  const [organize_by, setOrganize] = useState<string>('');
-  const [notification, setNotification] = useState<boolean>(true);
-  const [future_weeks, setFutureWeeks] = useState<number>(2);
+    const [name, setName] = useState("");
+    const [selectedOption, setSelectedOption] = useState<string | null>("Key Word");
+    const [greeting, setGreeting] = useState<string>("word"); // Default to "word"
+    const [futureWeeks, setFutureWeeks] = useState<number>(4); // Default to 4 weeks
+    const [loading, setLoading] = useState(false); // For loading state
+    const [refreshKey, setRefreshKey] = useState(0); // Key to trigger refresh
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/setting/get_settings', {withCredentials: true});
-        console.log(response.data);
-        setSettings(response.data);
-        setGreeting(response.data.greeting || 'word');
-        setOrganize(response.data.organize_by || 'category');
-        setNotification(response.data.notification);
-        setFutureWeeks(response.data.future_weeks || 4);
-      } catch (err) {
-        console.error("Error fetching settings", err);
-      }
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                // Fetch name
+                const nameResponse = await fetch('http://localhost:5000/user/name', {
+                    method: "GET",
+                    credentials: "include",
+                });
+                if (!nameResponse.ok) {
+                    throw new Error(`HTTP error! Status: ${nameResponse.status}`);
+                }
+                const nameData = await nameResponse.json();
+                setName(nameData); // Assuming the name is directly in the response object
+
+                // Fetch settings
+                const settingsResponse = await fetch('http://localhost:5000/setting/get_settings', {
+                    method: "GET",
+                    credentials: "include",
+                });
+                if (!settingsResponse.ok) {
+                    throw new Error(`HTTP error! Status: ${settingsResponse.status}`);
+                }
+                const settingsData = await settingsResponse.json();
+
+                // Map backend `priority_type` to toggle options
+                const priorityMap: { [key: string]: string } = {
+                    word_type: "Key Word",
+                    color_type: "Event Color",
+                    calendar_type: "Calendar",
+                };
+
+                setSelectedOption(priorityMap[settingsData.priority_type] || "Key Word");
+                setGreeting(settingsData.greeting || "word"); // Set greeting from backend
+                setFutureWeeks(settingsData.future_weeks || 4); // Set future weeks from backend
+            } catch (err) {
+                console.error("Error fetching settings or name:", err);
+            }
+        };
+
+        fetchSettings();
+    }, []);
+
+    const handleSliderChange = async (newWeeks: number) => {
+        setFutureWeeks(newWeeks);
+
+        try {
+            const response = await fetch("http://localhost:5000/setting/update_weeks", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ future_weeks: newWeeks }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+        } catch (err) {
+            console.error("Error updating future weeks:", err);
+        }
     };
-    fetchSettings();
-	}, []);
-  
-  const categories = [];
-  if (settings) {
-    for (let i = 1; i <= 11; i++) {
-      const eventKey = `e${i}` as keyof Settings;
-      const event = settings[eventKey]
 
-      if (isEventSettings(event) && event.category) {
-        categories.push(event.category);
-      }
-    }
-    console.log(categories);
-  }
+    const handleUpdateCalendars = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch("http://localhost:5000/setting/set_calendars", {
+                method: "POST",
+                credentials: "include",
+            });
 
-  const priorities = [];
-  if (settings) {
-    for (let i = 1; i <= 11; i++) {
-      const eventKey = `e${i}` as keyof Settings;
-      const event = settings[eventKey]
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            setRefreshKey((prevKey) => prevKey + 1);
+        } catch (err) {
+            console.error("Error updating calendars:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-      if (isEventSettings(event) && event.priority) {
-        priorities.push(event.priority);
-      }
-    }
-    console.log(priorities);
-  }
+    const handleToggleChange = (newOption: string | null) => {
+        setSelectedOption(newOption);
 
-  const toggleGreeting = async () => {
-    const newGreeting = greeting === 'quote' ? 'word' : 'quote';
-    setGreeting(newGreeting);
+        // Optionally, update the backend with the new priority_type
+        const priorityMap: { [key: string]: string } = {
+            "Key Word": "word_type",
+            "Event Color": "color_type",
+            "Calendar": "calendar_type",
+        };
 
-    try {
-      await axios.post('http://localhost:5000/setting/update_nonevent_setting', 
-        {
-          setting_key: 'greeting',
-          new_value: newGreeting,
-        },
-        { withCredentials: true }
-      );
-    } catch (err) {
-      console.error("Error updating greeting setting", err);
-    }
-  };
+        if (newOption) {
+            fetch("http://localhost:5000/setting/update_priority_type", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ priority_type: priorityMap[newOption] }),
+            }).catch((err) => console.error("Error updating priority type:", err));
+        }
+    };
 
-  const toggleOrganize = async () => {
-    const newOrganize = organize_by === 'priority' ? 'category' : 'priority';
-    setOrganize(newOrganize);
+    const toggleGreeting = () => {
+        const newGreeting = greeting === "word" ? "quote" : "word";
+        setGreeting(newGreeting);
 
-    try {
-      await axios.post('http://localhost:5000/setting/update_nonevent_setting', 
-        {
-          setting_key: 'organize_by',
-          new_value: newOrganize,
-        },
-        { withCredentials: true }
-      );
-    } catch (err) {
-      console.error("Error updating organize_by setting", err);
-    }
-  };
+        // Update the backend with the new greeting
+        fetch("http://localhost:5000/setting/update_greeting", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ greeting: newGreeting }),
+        }).catch((err) => console.error("Error updating greeting:", err));
+    };
 
-  const toggleNotification = async () => {
-    const newNotification = notification === true ? false : true;
-    setNotification(newNotification);
-
-    try {
-      console.log('Payload:', { setting_key: 'notification', new_value: newNotification });
-      await axios.post('http://localhost:5000/setting/update_nonevent_setting', 
-        {
-          setting_key: 'notification',
-          new_value: newNotification,
-        },
-        { withCredentials: true }
-      );
-    } catch (err) {
-      console.error("Error updating notification setting", err);
-    }
-  };
-
-  type SettingsKey = 'e1' | 'e2' | 'e3' | 'e4' | 'e5' | 'e6' | 'e7' | 'e8' | 'e9' | 'e10' | 'e11';
-  
-  const handleCategoryChange = async (key: SettingsKey, newValue: string) => {
-    if (!settings) return;
-    const updatedSettings = { ...settings, [key]: { ...settings[key], category: newValue } };
-    setSettings(updatedSettings);
-    try {
-      await axios.post(
-        'http://localhost:5000/setting/update_event_setting',
-        { setting_key: key, field_key: 'category', new_value: newValue },
-        { withCredentials: true }
-      );
-      console.log(`Category for ${key} updated to ${newValue}`);
-    } catch (err) {
-      console.error(`Error updating category for ${key}`, err);
-    }
-
-    const updatedCategories: string[] = [];
-    for (let i = 1; i <= 11; i++) {
-      const eventKey = `e${i}` as keyof Settings;
-      const event = updatedSettings[eventKey];
-
-      if (isEventSettings(event) && event.category) {
-        updatedCategories.push(event.category);
-      }
-    }
-  };
-
-  const handlePriorityChange = async (key: SettingsKey, newValue: string) => {
-    if (!settings) return;
-    const updatedSettings = { ...settings, [key]: { ...settings[key], priority: newValue } };
-    setSettings(updatedSettings);
-    try {
-      await axios.post(
-        'http://localhost:5000/setting/update_event_setting',
-        { setting_key: key, field_key: 'priority', new_value: newValue },
-        { withCredentials: true }
-      );
-      console.log(`Priority for ${key} updated to ${newValue}`);
-    } catch (err) {
-      console.error(`Error updating priority for ${key}`, err);
-    }
-
-    const updatedPriorities: string[] = [];
-    for (let i = 1; i <= 11; i++) {
-      const eventKey = `e${i}` as keyof Settings;
-      const event = settings[eventKey]
-
-      if (isEventSettings(event) && event.priority) {
-        updatedPriorities.push(event.priority);
-      }
-    }
-  };
-
-  const handleFutureWeeksChange = async (newValue: number) => {
-    if (!settings) return;
-    setFutureWeeks(newValue);
-    try {
-      await axios.post(
-        'http://localhost:5000/setting/update_nonevent_setting',
-        {
-          setting_key: 'future_weeks',
-          new_value: newValue,
-        },
-        { withCredentials: true }
-      );
-      console.log(`Future weeks updated to ${newValue}`);
-    } catch (err) {
-      console.error('Error updating future_weeks setting', err);
-    }
-  };
-
-  return (
-    <>
-        <div className="flex flex-col min-w-[800px] bg-custombg">
-            <Navbar />
-            <div className="container">
-                <div className="container-center">
-                    
-                     <div className="heading-text">
-                        Sara's Dashboard 
-                      </div>
-
-                    <div className="columns">
-                      <div className="left-column">
-                        <div className="sub-heading-text ">
-                          Customize your Greeting
-                        </div > 
-
-                        {settings ? (
-                          <SwitchWQ greeting={greeting} toggleGreeting={toggleGreeting} />
-                        ) : (
-                          <div>Loading...</div>
-                        )}
+    return (
+        <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex justify-center items-center flex-grow">
+            <div className="border border-[15px] border-[#CAEBF6] bg-[#CAEBF6] rounded-[20px] shadow-lg w-11/12 md:w-5/6 h-[80vh] p-1">
+            {/* Dashboard Title (outside of the scrollable content) */}
+            <h1 className="pt-3 text-4xl text-gray-800 font-medium text-center pb-3">
+                {name}'s Dashboard
+            </h1>
+            {/* Scrollable Content */}
+            <div className="overflow-y-auto scrollbar scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar scrollbar-thumb-[#96d0e3] h-[calc(100%-4rem)] pb-5">
+                <div className="flex flex-row justify-between">
+                <div className="basis-1/2 ml-7">
+                    <div className="justify-self-center mt-4">
                         
-                        <div className="sub-heading-text ">
-                          Classify your Calendar Events
-                        </div > 
-                        <div className="color-category">
-                          <div className="color-stack">
-                            <div className="circle bg-[#D50000]"></div>
-                            <div className="circle bg-[#E67C73]"></div>
-                            <div className="circle bg-[#F4511E]"></div>
-                            <div className="circle bg-[#F6BF26]"></div>
-                            <div className="circle bg-[#33B679]"></div>
-                            <div className="circle bg-[#0B8043]"></div>
-                            <div className="circle bg-[#039BE5]"></div>
-                            <div className="circle bg-[#3F51B5]"></div>
-                            <div className="circle bg-[#7986CB]"></div>
-                            <div className="circle bg-[#616161]"></div>
-                            <div className="circle bg-[#9E69AF]"></div>
-                          </div>
-
-                          <div className="category">
-                            <div className="sub-sub-heading-text ">
-                              Category Type
-                            </div >
-                            {categories.map((category, index) => (                              
-                              <AutoCompleteCE
-                                key={index}
-                                label={String(category || `Category for ${index}`)}
-                                onSelectionChange={(newValue) =>
-                                  handleCategoryChange(`e${index + 1}` as SettingsKey, newValue)
-                                }
-                              />                              
-                            ))}
-                          </div>
-
-                          <div className="priority">
-                            
-                            <div className="sub-sub-heading-text ">
-                              Priority
-                            </div > 
-                            {priorities.map((priority, index) => (                              
-                              <AutoCompletePrio
-                              key={index}
-                              label={String(priority || `Priority for ${index}`)}
-                              onSelectionChange={(newValue) =>
-                                handlePriorityChange(`e${index + 1}` as SettingsKey, newValue)
-                              }
-                            />                             
-                            ))}
-                          </div>
+                        {/* Calendar Selection */}
+                        <div className="text-2xl font-semibold text-center mb-2 mt-5">
+                            Calendar Selection
                         </div>
-                      </div>    
-                                          
-                      <div className="right-column">
-                        
-                    <div className="sub-heading-text ">
-                      Customize your Future at a Glance
-                    </div >
-                    
-                    <div className="sub-sub-heading-text ">
-                      Time frame in Weeks
-                    </div >
-                        <div className="slider">
-                          <SliderFG value={future_weeks} onChange={handleFutureWeeksChange} />  
-                        </div> 
-
-                        {settings ? (
-                          <SwitchCP organize_by={organize_by} toggleOrganize={toggleOrganize} />
-                        ) : (
-                          <div>Loading...</div>
-                        )}
-                        
-                    <div className="sub-heading-text ">
-                      Notification
-                    </div >
-                    
-                    <div className="sub-sub-heading-text ">
-                      Get your report emailed to you
-                    </div >
-                        {settings ? (
-                          <SwitchYesNo notification={notification} toggleNotification={toggleNotification} />
-                        ) : (
-                          <div>Loading...</div>
-                        )}
-                        
-                    <div className="sub-sub-heading-text ">
-                      Set a time to receive your report
-                    </div >   
+                        <p className="text-center font-semibold mb-2">
+                            Choose which of your Google Calendars will be included in your Roll Call.
+                        </p>
+                        <div className="flex flex-row gap-[49%] justify-center text-lg font-semibold mt-3">
+                            <p>Include</p>
+                            <p>Exclude</p>
                         </div>
-                        <div className="time-bubble">
-                          <TimeBubble />
-                        </div>     
-                      </div>
+                        <ChooseCalendars refreshKey={refreshKey} />
+
+                        <div className="mt-4 flex flex-row">
+                            <p className="basis-[60%]">If you have added or deleted calendars from your Google account, you must update them.</p>
+
+                            <div className="basis-[40%] text-center">
+                            <button
+                                onClick={handleUpdateCalendars}
+                                className="bg-[#689eb0] text-white px-4 py-2 rounded hover:bg-blue-300"
+                                disabled={loading}
+                            >
+                                {loading ? "Updating..." : "Update Google Calendars"}
+                            </button>
+                            </div>
+                        </div>
+
+
+                        {/* Greeting Selection */}
+                        <div>
+                            <div className="text-2xl font-semibold text-center mb-2 mt-8">
+                                Greeting Selection
+                            </div>
+                            <div className="flex flex-row gap-[10%] items-center font-semibold mt-3">
+                                <p className="text-center mb-2">
+                                    Choose your greeting preference.
+                                </p>
+                                <div className="ml">
+                                    <Switch greeting={greeting} toggleGreeting={toggleGreeting} />
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        {/* Future Week Selection */}
+                        <div>
+                            <div className="text-2xl font-semibold text-center mb-2 mt-8">
+                                Future at Glance Length
+                            </div>
+                            <div className="flex flex-col gap-[10%] items-center mt-3">
+                                <p className="text-center mb-2">
+                                    Select how many weeks in advance your future at glance report will consider.
+                                </p>
+                                <div className="ml">
+                                    <Slider value={futureWeeks} onChange={handleSliderChange} />
+                                </div>
+                                
+                            </div>
+                        </div>
+                       
+
                     </div>
                 </div>
+
+                {/* Prioritization Selection */}
+                <div className="justify-self-center overflow-auto mr-7 h-[100%]">
+                    <div>
+                    <div className="text-2xl font-semibold text-center mb-2 mt-5">
+                        Prioritization Preference
+                    </div>
+                    <p className="text-center font-semibold mb-2">
+                        Select the method by which you like to prioritize your Google calendar
+                        events.
+                    </p>
+                    <ul className="ml-4">
+                        <li>
+                        ‣ Key words: Add custom keywords to set prioritization.
+                        </li>
+                        <li>
+                        ‣ Event color: Set event prioritization based on the color of events in
+                        your Google calendar.
+                        </li>
+                        <li>
+                        ‣ Calendar: Assign prioritization based on each of your Google
+                        Calendars.
+                        </li>
+                    </ul>
+                    <div className="justify-self-center mt-4">
+                        <ToggleButton
+                        onToggleChange={handleToggleChange}
+                        initialValue={selectedOption}
+                        />
+                    </div>
+                    </div>
+                    {/* Type Selection */}
+                    <div className="justify-self-center mt-4">
+                        {selectedOption === "Key Word" && <WordType />}
+                        {selectedOption === "Event Color" && <ColorType />}
+                        {selectedOption === "Calendar" && <CalendarType />}
+                    </div>
+                </div>
+                </div>
             </div>
-    </>  
-    
-  )
-}
+            </div>
+        </div>
+        </div>
 
-export default DashboardPage
+    );
+};
 
+export default DashboardPage;

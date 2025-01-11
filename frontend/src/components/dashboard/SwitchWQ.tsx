@@ -2,27 +2,26 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import '../DashboardPage.css';
-import { SwitchWQProps } from '../types';
+import { SwitchWQProps } from '../../types';
 
 const SwitchWQ = styled(Switch)(({  }) => ({
-  width: 150,
-  height: 48,
+  width: 270, // Updated width
+  height: 62, // Updated height
   padding: 7,
 
   '& .MuiSwitch-switchBase': {
     margin: 8,
     padding: 0,
     transform: 'translateX(-1px)',
-    top: '-0.5px',
+    top: '-1px', // Adjusted for new height
 
     '&.Mui-checked': {
       color: '#fff',
-      transform: 'translateX(64px)',
+      transform: 'translateX(136px)', // Adjusted for new width
 
       '& .MuiSwitch-thumb:before': {
         content: "'Quote'",
-        fontSize: '12px', // Adjust font size to fit inside the circle
+        fontSize: '16px', // Increased font size for larger switch
         fontWeight: '700',
         display: 'flex',
         justifyContent: 'center',
@@ -33,25 +32,22 @@ const SwitchWQ = styled(Switch)(({  }) => ({
 
       '& + .MuiSwitch-track': {
         opacity: 1,
-        content: "'Quote'",
-        fontWeight: '700',
-        fontSize: '12px',
         backgroundColor: '#BFCDE5',
       },
     },
   },
 
-  //Properties: for Thumb
+  // Thumb (toggle handle)
   '& .MuiSwitch-thumb': {
-    backgroundColor: '#32A6F9',
-    width: 70,
-    height: 32,
+    backgroundColor: '#689eb0',
+    width: 120, // Increased width for larger switch
+    height: 48, // Increased height for larger switch
     borderRadius: 45,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
-    fontSize: '12px', // Adjust font size to fit "Word" inside
+    fontSize: '16px', // Adjusted for "Word"
     color: '#fff',
 
     '&::before': {
@@ -68,37 +64,37 @@ const SwitchWQ = styled(Switch)(({  }) => ({
     },
   },
 
-  //Properties: Track for quote option
+  // Track (background)
   '& .MuiSwitch-track': {
     opacity: 1,
     backgroundColor: '#BFCDE5',
     borderRadius: 45,
-    //--------------------------------------------------------------
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '12px',
+    padding: '15px', // Adjusted padding for larger size
     boxSizing: 'border-box',
 
     // Add labels "Word" and "Quote" inside the track
     '&::before': {
       content: "'Word'",
       fontWeight: '700',
-      fontSize: '12px',
+      fontSize: '16px', // Increased font size
       color: '#656C79',
       position: 'absolute',
-      left: '23px',
+      left: '40px', // Adjusted for larger width
     },
     '&::after': {
       content: "'Quote'",
       fontWeight: '700',
-      fontSize: '12px',
+      fontSize: '16px', // Increased font size
       color: '#656C79',
       position: 'absolute',
-      right: '23px',
+      right: '40px', // Adjusted for larger width
     },
   },
 }));
+
 
 
 const CustomizedSwitches = ({ greeting, toggleGreeting }: SwitchWQProps) => {

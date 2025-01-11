@@ -15,10 +15,21 @@ def create_app():
 
     app = Flask(__name__)
     CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
-    app.secret_key = os.getenv("SECRET_KEY", "fallback_secret_key")
-    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+    app.secret_key = os.getenv("SECRET_KEY")
 
-    print(f"App initialized with secret key: {app.secret_key}") 
+    app.config['SESSION_TYPE'] = 'filesystem'  # Use filesystem for local dev, or Redis for production
+    app.config['SESSION_PERMANENT'] = True
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)  # Customize as needed
+    app.config['SESSION_COOKIE_NAME'] = 'my_session'
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+
+    
+    # app.config['SESSION_PERMANENT'] = True
+    # app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=31)
+    # app.config['SECRET_KEY'] =  os.getenv("SECRET_KEY")
+
+    # print(f"App initialized with secret key: {app.secret_key}") 
 
     # Initialize MongoEngine
     init_db()

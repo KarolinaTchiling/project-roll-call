@@ -55,6 +55,8 @@ def get_user_settings(google_id):
     except DoesNotExist:
         print("User doesn't exist.")
         return None
+
+
     
 def update_user_nonevent_setting(google_id, setting_key, new_value):
     try:
