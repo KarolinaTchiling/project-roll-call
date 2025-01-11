@@ -1,5 +1,5 @@
 from app.services.auth_service.token import get_user_id, print_session
-from app.services.user_settings import get_user_settings, update_user_nonevent_setting, update_user_event_setting
+from app.services.user_settings import get_user_settings, update_user_nonevent_setting, update_user_event_setting, set_user_calendars
 from flask import session, request, jsonify
 from . import setting
 import json
@@ -8,6 +8,7 @@ from mongoengine.errors import DoesNotExist
 from bson import json_util  # Optional for BSON serialization
 import json
 from app.models import User  # Ensure the User model is imported
+
 
 @setting.route("/get_settings", methods=['GET'])
 def get_settings():
@@ -92,6 +93,29 @@ def update_calendar_include():
         return jsonify({"message": "Calendar include status updated successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+@setting.route('/set_calendars', methods=['POST'])
+def update_calendars():
+    """
+    Fetch calendars from Google Calendar API and update the user's settings.calendars.
+    """
+    try:
+        google_id = get_user_id(session)  # Fetch the user's Google ID from the session
+        user = User.objects.get(google_id=google_id)  # Retrieve the user object from the database
+
+        # Call the set_user_calendars function
+        set_user_calendars(user)
+        
+        return jsonify({"message": "User calendars updated successfully!"}), 200
+
+    except DoesNotExist:
+        return jsonify({"error": "User not found in the database."}), 404
+
+    except Exception as e:
+        current_app.logger.error(f"Error updating calendars: {str(e)}")
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+
 
 
 @setting.route('/update_greeting', methods=['POST'])

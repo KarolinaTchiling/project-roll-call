@@ -15,6 +15,10 @@ interface Calendar {
   summary: string;
 }
 
+interface TransferListProps {
+  refreshKey: number; // Add a prop to trigger re-fetching of calendars
+}
+
 function not<T>(a: readonly T[], b: readonly T[]) {
   return a.filter((value) => !b.includes(value));
 }
@@ -23,7 +27,7 @@ function intersection<T>(a: readonly T[], b: readonly T[]) {
   return a.filter((value) => b.includes(value));
 }
 
-const TransferList: React.FC = () => {
+const TransferList: React.FC<TransferListProps> = ({ refreshKey }) => {
   const [checked, setChecked] = useState<readonly Calendar[]>([]);
   const [left, setLeft] = useState<readonly Calendar[]>([]);
   const [right, setRight] = useState<readonly Calendar[]>([]);
@@ -56,7 +60,7 @@ const TransferList: React.FC = () => {
     };
 
     fetchCalendars();
-  }, []);
+  }, [refreshKey]);
 
   const updateIncludeStatus = async (calendarID: string, include: boolean) => {
     try {
@@ -124,7 +128,7 @@ const TransferList: React.FC = () => {
   };
 
   const customList = (items: readonly Calendar[]) => (
-    <Paper sx={{ width: 230, height: 350, overflow: "auto", backgroundColor: "#CAEBF6", borderRadius: 2, border: "0.8px solid grey", boxShadow: "none",}}>
+    <Paper sx={{ width: 230, height: 400, overflow: "auto", backgroundColor: "#CAEBF6", borderRadius: 2, border: "0.8px solid grey", boxShadow: "none",}}>
       <List dense component="div" role="list">
         {items.map((value: Calendar) => {
           const labelId = `transfer-list-item-${value.calendarID}-label`;

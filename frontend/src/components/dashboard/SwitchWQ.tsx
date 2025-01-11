@@ -39,7 +39,7 @@ const SwitchWQ = styled(Switch)(({  }) => ({
 
   // Thumb (toggle handle)
   '& .MuiSwitch-thumb': {
-    backgroundColor: '#4e8799',
+    backgroundColor: '#689eb0',
     width: 120, // Increased width for larger switch
     height: 48, // Increased height for larger switch
     borderRadius: 45,

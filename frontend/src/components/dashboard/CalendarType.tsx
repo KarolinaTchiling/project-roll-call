@@ -26,8 +26,13 @@ const CalendarType: React.FC = () => {
 
       const data = await response.json();
 
-      // Initialize fetched calendars with default "none" priority
-      const fetchedCalendars = (data.calendars || []).map((calendar: any) => ({
+      // Filter calendars to only include those with `include: true`
+      const filteredCalendars = (data.calendars || []).filter(
+        (calendar: { include: boolean }) => calendar.include
+      );
+
+      // Initialize filtered calendars with default "none" priority
+      const fetchedCalendars = filteredCalendars.map((calendar: any) => ({
         ...calendar,
         priority: 'none',
       }));

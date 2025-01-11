@@ -11,6 +11,9 @@ const DashboardPage = () => {
     const [name, setName] = useState("");
     const [selectedOption, setSelectedOption] = useState<string | null>("Key Word");
     const [greeting, setGreeting] = useState<string>("word"); // Default to "word"
+    const [loading, setLoading] = useState(false); // For loading state
+    const [successMessage, setSuccessMessage] = useState<string>("");
+    const [refreshKey, setRefreshKey] = useState(0); // Key to trigger refresh
 
     useEffect(() => {
         const fetchSettings = async () => {
@@ -52,6 +55,30 @@ const DashboardPage = () => {
 
         fetchSettings();
     }, []);
+
+    const handleUpdateCalendars = async () => {
+        setLoading(true);
+        setSuccessMessage(""); // Clear previous messages
+        try {
+            const response = await fetch("http://localhost:5000/setting/set_calendars", {
+                method: "POST",
+                credentials: "include",
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setSuccessMessage(data.message || "Calendars updated successfully!");
+            setRefreshKey((prevKey) => prevKey + 1);
+        } catch (err) {
+            console.error("Error updating calendars:", err);
+            setSuccessMessage("Failed to update calendars.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleToggleChange = (newOption: string | null) => {
         setSelectedOption(newOption);
@@ -116,18 +143,39 @@ const DashboardPage = () => {
                             <p>Include</p>
                             <p>Exclude</p>
                         </div>
-                        <ChooseCalendars />
+                        <ChooseCalendars refreshKey={refreshKey} />
+
+                        <div className="mt-4 flex flex-row">
+                            <p className="basis-[60%]">If you have added or deleted calendars from your Google account, you must update them.</p>
+
+                            <div className="basis-[40%] text-center">
+                            <button
+                                onClick={handleUpdateCalendars}
+                                className="bg-[#689eb0] text-white px-4 py-2 rounded hover:bg-blue-300"
+                                disabled={loading}
+                            >
+                                {loading ? "Updating..." : "Update Google Calendars"}
+                            </button>
+                            {successMessage && (
+                                <p className="text-blue-500 mt-2">{successMessage}</p>
+                            )}
+                            </div>
+                        </div>
+
 
                         {/* Greeting Selection */}
                         <div>
-                            <div className="text-2xl font-semibold text-center mb-2 mt-10">
+                            <div className="text-2xl font-semibold text-center mb-2 mt-8">
                                 Greeting Selection
                             </div>
                             <div className="flex flex-col gap-[10%] items-center text-lg font-semibold mt-3">
                                 <p className="text-center font-semibold mb-2">
                                     Choose your greeting preference.
                                 </p>
-                                <Switch greeting={greeting} toggleGreeting={toggleGreeting} />
+                                <div className="ml-7">
+                                    <Switch greeting={greeting} toggleGreeting={toggleGreeting} />
+                                </div>
+                                
                             </div>
                         </div>
                        
@@ -136,7 +184,7 @@ const DashboardPage = () => {
                 </div>
 
                 {/* Prioritization Selection */}
-                <div className="overflow-auto mr-7 h-[100%]">
+                <div className="justify-self-center overflow-auto mr-7 h-[100%]">
                     <div>
                     <div className="text-2xl font-semibold text-center mb-2 mt-5">
                         Prioritization Preference

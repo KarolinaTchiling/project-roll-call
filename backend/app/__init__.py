@@ -19,7 +19,7 @@ def create_app():
 
     app.config['SESSION_TYPE'] = 'filesystem'  # Use filesystem for local dev, or Redis for production
     app.config['SESSION_PERMANENT'] = True
-    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)  # Customize as needed
+    app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)  # Customize as needed
     app.config['SESSION_COOKIE_NAME'] = 'my_session'
     app.config['SESSION_COOKIE_HTTPONLY'] = True
     app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
