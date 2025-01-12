@@ -136,5 +136,3 @@ def get_session():
 @auth.route("/test")
 def test():
     return "Auth Blueprint is working!"
-
-

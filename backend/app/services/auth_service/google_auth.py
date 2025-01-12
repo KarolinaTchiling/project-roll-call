@@ -47,4 +47,5 @@ def handle_oauth_callback(authorization_response, redirect_uri):
     session['features'] = features
 
     # Return the dictionary instead of the object
+
     return credentials_dict
