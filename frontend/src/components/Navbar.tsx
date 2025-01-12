@@ -68,7 +68,7 @@ function ResponsiveAppBar() {
         credentials: 'include', // Include cookies if session-based auth is used
       });
       if (response.ok) {
-        const data = await response.json();
+        await response.json();
         navigate('/'); // Redirect to login page
       } else {
         console.error('Logout failed');

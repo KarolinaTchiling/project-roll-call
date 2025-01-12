@@ -51,7 +51,7 @@ export default function ShareDialog() {
         throw new Error("Failed to share the report. Please try again.");
       }
 
-      const data = await response.json();
+      await response.json();
 
       // Indicate success
       setSent(true);

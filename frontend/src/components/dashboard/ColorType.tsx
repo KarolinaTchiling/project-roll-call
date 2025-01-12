@@ -27,7 +27,6 @@ const predefinedColors: CalendarColor[] = [
 
 const ColorType: React.FC = () => {
   const [colors, setColors] = useState<CalendarColor[]>(predefinedColors);
-  const [primaryCalendar, setPrimaryCalendar] = useState<CalendarColor | null>(null);
 
   const fetchColorsFromDB = async () => {
     try {

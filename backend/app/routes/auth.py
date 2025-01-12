@@ -47,7 +47,7 @@ def callback():
             user = update_user(user_info)  # update any profile info that was changed in google account from last login
             store_creds(user, credentials_dict)  # update creds on login
             # redirect to main page
-            return redirect("http://localhost:3000/today")
+            return redirect(f"{FRONTEND_URL}/today")
         
         # new user !
         else:
@@ -56,7 +56,7 @@ def callback():
             set_user_calendars(user)
 
             # redirect to the user dashboard to get their settings 
-            return redirect("http://localhost:3000/dashboard")
+            return redirect(f"{FRONTEND_URL}/dashboard")
 
     except Exception as e:
         return f"An error occurred during the OAuth process: {str(e)}", 400

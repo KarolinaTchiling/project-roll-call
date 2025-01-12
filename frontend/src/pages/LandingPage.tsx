@@ -1,8 +1,6 @@
-import React from 'react';
 import '../LandingPage.css';
 import RollCallIcon from "../assets/RollCallIcon.png";
 import GoogleLogo from "../assets/googleLogo.svg"
-import { IconButton } from '@mui/material';
 
 const roll = " Roll "
 
