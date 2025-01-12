@@ -8,6 +8,7 @@ from app.services.user_service import create_user, get_user, user_in_db, store_c
 from app.services.user_settings import set_user_calendars
 from . import auth
 
+FRONTEND_URL = os.getenv("FRONTEND_URL")
 
 """
 This route is used both signup and login (first and revisiting user). 
@@ -30,11 +31,8 @@ def login():
 def callback():
     try:
         redirect_uri = url_for("auth.callback", _external=True)
-        print("1")
         credentials_dict = handle_oauth_callback(request.url, redirect_uri)
-        print("2")
         user_info = decode_google_id_token(credentials_dict["id_token"])
-        print("3")
 
         # store the user in the session
         session["user"] = {
