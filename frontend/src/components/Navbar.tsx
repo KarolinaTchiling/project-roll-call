@@ -22,7 +22,7 @@ const pages = [
   // { label: 'Insights', path: '/insights' },
 ];
 
-const settings = ['Logout'];
+const settings = ['Logout', 'Google Calendar'];
 
 function ResponsiveAppBar() {
   const location = useLocation()
@@ -129,7 +129,7 @@ function ResponsiveAppBar() {
 
           {/* User Avatar and Settings Menu */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Logout">
+            <Tooltip title="Logout + Google Calendar">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, }}>
                 <Avatar alt="User Avatar" src={profilePic} />
               </IconButton>
@@ -145,16 +145,17 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-              <MenuItem
-                key={setting}
-                onClick={() => {
-                  handleCloseUserMenu();
-                  if (setting === 'Logout') {
-                    handleLogout(); // Call the logout function
-                  }
-                }}
-                {...(setting === 'Settings' && { component: RouterLink, to: '/settings' })} 
-                  >
+                <MenuItem
+                  key={setting}
+                  onClick={() => {
+                    handleCloseUserMenu();
+                    if (setting === 'Logout') {
+                      handleLogout(); // Call the logout function
+                    } else if (setting === 'Google Calendar') {
+                      window.open('https://calendar.google.com', '_blank', 'noopener,noreferrer'); // Open Google Calendar in a new tab
+                    }
+                  }}
+                >
                   <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>
               ))}
