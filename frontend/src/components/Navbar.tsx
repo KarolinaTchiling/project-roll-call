@@ -12,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import CalendarIcon from '@mui/icons-material/CalendarMonth';
 import { Link , useLocation, useNavigate } from 'react-router-dom';
-import { Link as RouterLink } from 'react-router-dom';
 
 // This is a navigation bar component which routes to different pages
 const pages = [
