@@ -1,3 +1,5 @@
+from dotenv import load_dotenv  # Load .env at the top
+load_dotenv()
 from flask import redirect, session, request, url_for, jsonify
 from ..services.auth_service.google_auth import initiate_google_auth, handle_oauth_callback
 from app.services.auth_service.token import save_session, decode_google_id_token

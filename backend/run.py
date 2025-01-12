@@ -1,28 +1,31 @@
-from dotenv import load_dotenv  # Load .env at the top
-load_dotenv()
-import os
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")  # Default to localhost if not set
+from dotenv import load_dotenv
+load_dotenv()  # Load .env file
 
+import os
 from app import create_app
 import logging
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Load environment variables
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+FLASK_ENV = os.getenv("FLASK_ENV", "production")
+PORT = int(os.getenv("PORT", 5000))
+
+if not FRONTEND_URL:
+    logger.warning("FRONTEND_URL is not set. Using default: http://localhost:3000")
+
+# Development-specific settings
+if FLASK_ENV == "development":
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'  # Allow HTTP for local testing
+
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+
+# Initialize Flask app
 app = create_app()
 
-
 if __name__ == "__main__":
-    
-    print(f"FLASK_ENV------------------: {os.getenv('FLASK_ENV')}")
-
-    FLASK_ENV = os.getenv("FLASK_ENV")
-
-    if os.getenv("FLASK_ENV") == "development":
-        os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'  # Allow HTTP for local testing
-
-    os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1' 
-    
-    logger.info(f"Starting the app in {FLASK_ENV} mode")
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=(os.getenv("FLASK_ENV") == "development"))
-    
+    logger.info(f"Starting the app in {FLASK_ENV} mode on port {PORT}")
+    app.run(host="0.0.0.0", port=PORT, debug=(FLASK_ENV == "development"))
