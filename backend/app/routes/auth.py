@@ -35,7 +35,7 @@ def callback():
             "email": user_info["email"],
         }
         session.permanent = True
-        save_session()  # saves to json just for debugging
+        # save_session()  # saves to json just for debugging
 
         # User already exists !
         if user_in_db(user_info["google_id"]): 
@@ -130,5 +130,3 @@ def get_session():
 @auth.route("/test")
 def test():
     return "Auth Blueprint is working!"
-
-

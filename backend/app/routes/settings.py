@@ -17,8 +17,6 @@ def get_settings():
         google_id = get_user_id(session)
         settings = get_user_settings(google_id)  # Fetch the settings object
 
-        print(google_id)
-
         # Serialize settings to a dictionary
         if hasattr(settings, 'to_mongo'):
             settings_dict = settings.to_mongo().to_dict()
