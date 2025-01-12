@@ -26,8 +26,11 @@ def login():
 def callback():
     try:
         redirect_uri = url_for("auth.callback", _external=True)
+        print("1")
         credentials_dict = handle_oauth_callback(request.url, redirect_uri)
+        print("2")
         user_info = decode_google_id_token(credentials_dict["id_token"])
+        print("3")
 
         # store the user in the session
         session["user"] = {
