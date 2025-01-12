@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoutes';
+// import ProtectedRoute from './components/ProtectedRoutes';
 
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
