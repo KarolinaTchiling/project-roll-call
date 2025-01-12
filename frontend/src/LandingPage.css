@@ -19,13 +19,14 @@
     min-width: 65vw; 
     min-height: 100vh;
 }
-.container-right{
+.container-right {
     width: 100%;
     background-color: #13617C;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 20px;
     min-width: 33.7vw;
     min-height: 100vh;
 }
@@ -68,6 +69,27 @@
     font-weight: 400;
     line-height: normal;
 }
+
+/* Typography */
+.paragraph3 {
+    color: #ffffff;
+    text-align: center;
+    font-family: Nunito, sans-serif;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+.paragraph2 {
+    color: #ffffff;
+    text-align: center;
+    font-family: Nunito, sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-top: 1rem;
+}
+
 .paragraph-bold{
     color: #000;
     font-family: Nunito;
