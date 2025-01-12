@@ -1,5 +1,6 @@
 from dotenv import load_dotenv  # Load .env at the top
 load_dotenv()
+
 from flask import redirect, session, request, url_for, jsonify
 from ..services.auth_service.google_auth import initiate_google_auth, handle_oauth_callback
 from app.services.auth_service.token import save_session, decode_google_id_token
@@ -22,6 +23,7 @@ def login():
     # creates a new session every time a user logs i
     # This is important because for the schedule report email we need to keep the 
     # session alive (it expires after 31)
+    print({FRONTEND_URL})
     session.clear()
     return redirect(initiate_google_auth("auth.callback"))
 @auth.route("/callback")
