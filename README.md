@@ -2,7 +2,7 @@
 
 This project was developed as part of the "Software Design" course. RollCall is a web application designed to streamline daily planning by automatically generating personalized daily reports based on Google Calendar data. Built with Flask for the backend and React for the frontend, the app integrates with the Google Calendar API to provide insights into meetings, tasks, and schedules.
 
-##### Features
+### Features
 - **Automated Reports**: Generate daily, weekly, and ~monthly reports that prioritize events based on importance and urgency.  
 - **Calendar Integration**: Sync seamlessly with Google Calendar for real-time updates.  
 - **Customizable Preferences**: Adjust prioritization settings by choosing the method by which you like to prioritize your Google calendar events. Options include:  
