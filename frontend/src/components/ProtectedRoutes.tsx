@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
@@ -7,7 +7,7 @@ interface ProtectedRouteProps {
 
 const checkAuthStatus = async () => {
   try {
-    const response = await fetch('http://localhost:5000/auth/status', {
+    const response = await fetch(`${import.meta.env.VITE_BASE_URL}/auth/status`, {
       method: 'GET',
       credentials: 'include', // Include session cookies
     });

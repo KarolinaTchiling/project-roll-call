@@ -15,7 +15,7 @@ const CalendarType: React.FC = () => {
 
   const fetchCalendars = async () => {
     try {
-      const response = await fetch('http://localhost:5000/setting/get_settings', {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/get_settings`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -63,7 +63,7 @@ const CalendarType: React.FC = () => {
 
   const deleteCalendarFromPriority = async (calendarID: string, priority: string) => {
     try {
-      const response = await fetch('http://localhost:5000/setting/delete_calendar', {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/delete_calendar`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -103,7 +103,7 @@ const CalendarType: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/setting/add_calendar', {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/add_calendar`, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -12,7 +12,7 @@ def get_report_html(google_id, shared=False):
 
     if shared:
         greeting = f"Hello, {name} shared their Roll Call with you!"
-        footer = f"Get your own! http://localhost:3000/"
+        footer = f"Get your own! https://project-roll-call.vercel.app"
     else:
         greeting = f"Hello {name}, here is your Roll Call!"
         footer = f"Good luck, see you tomorrow!"

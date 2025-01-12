@@ -78,7 +78,7 @@ const PrioritySection: React.FC<PrioritySectionProps> = ({ label, words = [], on
   
     const fetchSettings = async () => {
       try {
-        const response = await fetch('http://localhost:5000/setting/get_settings', {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/get_settings`, {
           method: 'GET',
           credentials: 'include', // Ensure cookies are included
         });
@@ -100,7 +100,7 @@ const PrioritySection: React.FC<PrioritySectionProps> = ({ label, words = [], on
   
     const addWordToDatabase = async (priority: string, word: string) => {
       try {
-        const response = await fetch('http://localhost:5000/setting/add_word', {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/add_word`, {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -121,7 +121,7 @@ const PrioritySection: React.FC<PrioritySectionProps> = ({ label, words = [], on
   
     const deleteWordFromDatabase = async (priority: string, word: string) => {
       try {
-        const response = await fetch('http://localhost:5000/setting/delete_word', {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/delete_word`, {
           method: 'POST',
           credentials: 'include',
           headers: {

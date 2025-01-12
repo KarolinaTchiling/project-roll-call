@@ -24,6 +24,9 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
 
+          {/* <Route path="/today" element={<TodayPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} /> */}
+
           {/* Protected Routes */}
           <Route
             path="/today"
@@ -46,15 +49,6 @@ function App() {
 
           {/* 404 Page */}
          <Route path="*" element={<NotFoundPage />} />
-
-
-          {/* <Route path="/today" element={<TodayPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/test" element={<TestPage />} />
-
-          <Route path="/yesterday" element={<YesterdayPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="/insights" element={<InsightsPage />} /> */}
 
 
         </Routes>

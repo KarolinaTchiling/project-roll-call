@@ -6,13 +6,12 @@ import Loader from './Loader';
 
 function WeekBubble() {
     const [weekEvents, setWeekEvents] = useState<{ day: string; events: CalendarEvent[] }[]>([]);
-    const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true); // Loading state
     
     const fetchWeekEvents = async () => {
         setLoading(true); // Start loading
         try {
-            const response = await axios.get('http://localhost:5000/cal/week_events', {
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/cal/week_events`, {
                 withCredentials: true,
             });
     
@@ -36,10 +35,8 @@ function WeekBubble() {
             }));
     
             setWeekEvents(sortedEvents);
-            setError(null);
         } catch (error: any) {
             console.error('Error fetching week events:', error.response?.data || error.message);
-            setError(error.response?.data || error.message);
         } finally {
             setLoading(false); // Stop loading
           }

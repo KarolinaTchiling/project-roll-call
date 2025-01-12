@@ -36,7 +36,7 @@ const TransferList: React.FC<TransferListProps> = ({ refreshKey }) => {
   useEffect(() => {
     const fetchCalendars = async () => {
       try {
-        const response = await fetch("http://localhost:5000/setting/get_settings", {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/get_settings`, {
           method: "GET",
           credentials: "include",
         });
@@ -64,7 +64,7 @@ const TransferList: React.FC<TransferListProps> = ({ refreshKey }) => {
 
   const updateIncludeStatus = async (calendarID: string, include: boolean) => {
     try {
-      await fetch("http://localhost:5000/setting/update_calendar_include", {
+      await fetch(`${import.meta.env.VITE_BASE_URL}/setting/update_calendar_include`, {
         method: "POST",
         credentials: "include",
         headers: {

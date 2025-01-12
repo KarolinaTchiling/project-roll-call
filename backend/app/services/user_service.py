@@ -24,7 +24,7 @@ def create_user(profile):
 
         # Save the new user to the database
         user.save()
-        print(f"Created new user with email: {profile['email']}")
+        print(f"Created new user.")
 
     return user
 
@@ -50,7 +50,8 @@ def update_user(profile):
         
         if updated:
             user.save()
-            print(f"User profile updated for user")
+            print(f"User profile updated for user.")
+
         else:
             print("No changes detected in user profile.")
         

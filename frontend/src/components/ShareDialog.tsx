@@ -38,7 +38,7 @@ export default function ShareDialog() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/report/share?recipient=${encodeURIComponent(
+        `${import.meta.env.VITE_BASE_URL}/report/share?recipient=${encodeURIComponent(
           email as string
         )}`,
         {
@@ -51,7 +51,7 @@ export default function ShareDialog() {
         throw new Error("Failed to share the report. Please try again.");
       }
 
-      const data = await response.json();
+      await response.json();
 
       // Indicate success
       setSent(true);

@@ -27,11 +27,10 @@ const predefinedColors: CalendarColor[] = [
 
 const ColorType: React.FC = () => {
   const [colors, setColors] = useState<CalendarColor[]>(predefinedColors);
-  const [primaryCalendar, setPrimaryCalendar] = useState<CalendarColor | null>(null);
 
   const fetchColorsFromDB = async () => {
     try {
-      const response = await fetch('http://localhost:5000/setting/get_settings', {
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/setting/get_settings`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -69,7 +68,7 @@ const ColorType: React.FC = () => {
 
     // Remove from current priority if exists
     if (currentPriority !== 'none') {
-      await fetch('http://localhost:5000/setting/delete_color', {
+      await fetch(`${import.meta.env.VITE_BASE_URL}/setting/delete_color`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -79,7 +78,7 @@ const ColorType: React.FC = () => {
 
     // Add to new priority if not 'none'
     if (newPriority !== 'none') {
-      await fetch('http://localhost:5000/setting/add_color', {
+      await fetch(`${import.meta.env.VITE_BASE_URL}/setting/add_color`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },

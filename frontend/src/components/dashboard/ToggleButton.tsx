@@ -14,10 +14,7 @@ export default function ToggleButtons({ onToggleChange, initialValue }: ToggleBu
         setAlignment(initialValue); // Update alignment when initialValue changes
     }, [initialValue]);
 
-    const handleAlignment = (
-        event: React.MouseEvent<HTMLElement>,
-        newAlignment: string | null
-    ) => {
+    const handleAlignment = (_: React.MouseEvent<HTMLElement>, newAlignment: string | null) => {
         setAlignment(newAlignment);
         onToggleChange(newAlignment);
     };

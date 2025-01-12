@@ -1,28 +1,31 @@
+from dotenv import load_dotenv  # Load .env at the top
+load_dotenv()
 from flask import Flask, session
 from datetime import timedelta
 from flask_cors import CORS
-from dotenv import load_dotenv
 import os
 from mongoengine import connect
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 def create_app():
     """
     App factory function to create and configure the Flask application.
     """
-    # Load environment variables from `.env` file
-    load_dotenv()
 
     app = Flask(__name__)
-    CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
+    CORS(app, supports_credentials=True, resources={r"/*": {"origins": os.getenv("FRONTEND_URL")}})
     app.secret_key = os.getenv("SECRET_KEY")
 
-    app.config['SESSION_TYPE'] = 'filesystem'  # Use filesystem for local dev, or Redis for production
+    app.config['SESSION_TYPE'] = 'filesystem'  
     app.config['SESSION_PERMANENT'] = True
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)  # Customize as needed
     app.config['SESSION_COOKIE_NAME'] = 'my_session'
-    app.config['SESSION_COOKIE_HTTPONLY'] = True
-    app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+    app.config['SESSION_COOKIE_HTTPONLY'] = False
+    app.config['SESSION_COOKIE_SECURE'] = True  # Set to True in production with HTTPS
+    app.config['PREFERRED_URL_SCHEME'] = 'https'
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Allow cookies for cross-origin requests
 
     # Initialize MongoEngine
     init_db()
