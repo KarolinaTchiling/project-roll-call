@@ -24,8 +24,11 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
 
+          <Route path="/today" element={<TodayPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+
           {/* Protected Routes */}
-          <Route
+          {/* <Route
             path="/today"
             element={
               <ProtectedRoute>
@@ -41,7 +44,7 @@ function App() {
                 <DashboardPage />
               </ProtectedRoute>
             }
-          />  
+          />   */}
 
 
           {/* 404 Page */}
