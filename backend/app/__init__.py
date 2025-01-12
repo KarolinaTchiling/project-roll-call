@@ -18,7 +18,7 @@ def create_app():
     CORS(app, supports_credentials=True, resources={r"/*": {"origins": os.getenv("FRONTEND_URL")}})
     app.secret_key = os.getenv("SECRET_KEY")
 
-    app.config['SESSION_TYPE'] = 'filesystem'  # Use filesystem for local dev, or Redis for production
+    # app.config['SESSION_TYPE'] = 'filesystem'  # Use filesystem for local dev, or Redis for production
     app.config['SESSION_PERMANENT'] = True
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)  # Customize as needed
     app.config['SESSION_COOKIE_NAME'] = 'my_session'

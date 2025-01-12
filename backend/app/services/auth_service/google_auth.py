@@ -5,6 +5,7 @@ from app.config import Config
 from app.services.auth_service.token import credentials_to_dict, credentials_to_dict, check_granted_scopes
 
 
+
 def initiate_google_auth(callback_route):
     """
     Initiates the Google OAuth flow by generating the authorization URL.

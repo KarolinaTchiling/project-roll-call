@@ -8,6 +8,7 @@ from app.services.auth_service.token import save_session, decode_google_id_token
 from app.services.user_service import create_user, get_user, user_in_db, store_creds, update_user
 from app.services.user_settings import set_user_calendars
 from . import auth
+import logging
 
 FRONTEND_URL = os.getenv("FRONTEND_URL")
 
@@ -50,6 +51,7 @@ def callback():
             user = update_user(user_info)  # update any profile info that was changed in google account from last login
             store_creds(user, credentials_dict)  # update creds on login
             # redirect to main page
+            logger.info(f"Redirecting user to: {FRONTEND_URL}/today")
             return redirect(f"{FRONTEND_URL}/today")
         
         # new user !
@@ -58,7 +60,8 @@ def callback():
             store_creds(user, credentials_dict)  # store creds on signup
             set_user_calendars(user)
 
-            # redirect to the user dashboard to get their settings 
+            # redirect to the user dashboard to get their settings
+            logger.info(f"Redirecting user to: {FRONTEND_URL}/dashboard")
             return redirect(f"{FRONTEND_URL}/dashboard")
 
     except Exception as e:
