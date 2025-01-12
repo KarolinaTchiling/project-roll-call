@@ -53,7 +53,7 @@ RollCall will automatically generate a daily roll-call or stand-up report based 
 ## Installation
 
 ###### NOTE
-If installing on your machine you will not have access to the database or codebase secrets. The following is only an example of how this e-store can be ran locally.
+If installing on your machine you will not have access to the database or codebase secrets. The following is only an example of how this can be ran locally.
 
 #### Running on your Machine
 
