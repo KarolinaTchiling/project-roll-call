@@ -1,9 +1,9 @@
 from dotenv import load_dotenv  # Load .env at the top
 load_dotenv()
+import os
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")  # Default to localhost if not set
 
 from app import create_app
-import os
 import logging
 
 # Configure logging
